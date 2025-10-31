@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { getBottomRatedDishes } from "../data/mockDishes";
+import React from "react";
 
 export function WeakPointsChart() {
   const bottomDishes = getBottomRatedDishes(7);

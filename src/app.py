@@ -16,15 +16,18 @@ from components.dish_card import create_dish_card
 from components.charts import (
     create_histogram_price_ranges,
     create_performance_chart,
-    create_histogram_price_ranges
+    create_histogram_price_ranges,
+    create_review_charts,
 )
 
 # Initialize the Dash app
 app = dash.Dash(
     __name__,
-    title="Restaurant Analytics Dashboard",
+    title="Platemate Restaurant Analytics Dashboard",
     suppress_callback_exceptions=True
 )
+
+recent_reviews_fig, reviews_line_fig = create_review_charts()
 
 # Define the layout
 app.layout = html.Div(
@@ -42,7 +45,7 @@ app.layout = html.Div(
                             className="header-title-row",
                             children=[
                                 html.Span("🍴", className="header-icon"),
-                                html.H1("Restaurant Analytics Dashboard", className="header-title")
+                                html.H1("Platemate Restaurant Analytics Dashboard", className="header-title")
                             ]
                         ),
                         html.P(
@@ -113,10 +116,40 @@ app.layout = html.Div(
 
                     ]
                 ),
+                html.Hr(style={"marginTop": "60px", "marginBottom": "30px"}),
+
+html.Div(
+    className="reviews-section",
+    children=[
+        html.H2("🗒️ Customer Reviews", style={"textAlign": "center", "marginBottom": "20px"}),
+
+        html.Div(
+            className="chart-wrapper",
+            children=[
+                dcc.Graph(
+                    id="recent-reviews-chart",
+                    figure=recent_reviews_fig,
+                    config={'displayModeBar': False}
+                )
+            ]
+        ),
+        html.Div(
+            className="chart-wrapper",
+            children=[
+                dcc.Graph(
+                    id="reviews-over-time",
+                    figure=reviews_line_fig,
+                    config={'displayModeBar': False}
+                )
             ]
         )
     ]
 )
+            ]
+        )
+    ]
+)
+
 
 # Callback to update dish cards based on selected tab
 @app.callback(
