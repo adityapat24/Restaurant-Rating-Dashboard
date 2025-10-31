@@ -14,8 +14,9 @@ from data.dishes import (
 )
 from components.dish_card import create_dish_card
 from components.charts import (
+    create_histogram_price_ranges,
     create_performance_chart,
-    create_weak_points_chart
+    create_histogram_price_ranges
 )
 
 # Initialize the Dash app
@@ -98,18 +99,20 @@ app.layout = html.Div(
                                 )
                             ]
                         ),
+                        # Price range histogram
                         html.Div(
                             className="chart-wrapper",
                             children=[
                                 dcc.Graph(
-                                    id="weak-points-chart",
-                                    figure=create_weak_points_chart(),
+                                    id="price-histogram",
+                                    figure=create_histogram_price_ranges(),
                                     config={'displayModeBar': False}
                                 )
                             ]
                         )
+
                     ]
-                )
+                ),
             ]
         )
     ]
