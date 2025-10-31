@@ -16,7 +16,6 @@ from components.dish_card import create_dish_card
 from components.charts import (
     create_histogram_price_ranges,
     create_performance_chart,
-    create_weak_points_chart,
     create_histogram_price_ranges
 )
 
@@ -100,24 +99,7 @@ app.layout = html.Div(
                                 )
                             ]
                         ),
-                        html.Div(
-                            className="chart-wrapper",
-                            children=[
-                                dcc.Graph(
-                                    id="weak-points-chart",
-                                    figure=create_weak_points_chart(),
-                                    config={'displayModeBar': False}
-                                )
-                            ]
-                        )
-                    ]
-                ),
-
-                
-                # Price range histogram
-                html.Div(
-                    className="charts-container",
-                    children=[
+                        # Price range histogram
                         html.Div(
                             className="chart-wrapper",
                             children=[
@@ -128,8 +110,9 @@ app.layout = html.Div(
                                 )
                             ]
                         )
+
                     ]
-                )
+                ),
             ]
         )
     ]
