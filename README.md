@@ -3,9 +3,21 @@
 
   This is a code bundle for Restaurant Rating Dashboard. The original project is available at https://www.figma.com/design/BgAZnVLha6JaB0123bxN3T/Restaurant-Rating-Dashboard.
 
-  ## Running the code
+## Installation
 
-  Run `npm i` to install the dependencies.
+1. Install Python 3.8 or higher
 
-  Run `npm run dev` to start the development server.
-  
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## Running the Application
+
+```bash
+python app.py
+```
+
+Then open your browser and navigate to:
+```
+http://localhost:8050
