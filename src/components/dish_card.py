@@ -3,22 +3,64 @@ Dish card component
 """
 
 from dash import html
-from data.dishes import calculate_average_rating
+import pandas as pd
+from data.loadData import loadData
+
+
+def _get_aggregated_stats_for_name(name: str):
+    """Return aggregated (taste, portion, value, overall, review_count) for a menu item name."""
+    data = loadData()
+    reviews_df = pd.DataFrame(data.get("reviews", []))
+    ratings_df = pd.DataFrame(data.get("ratings", []))
+    menu_df = pd.DataFrame(data.get("menuItems", []))
+
+    if reviews_df.empty or ratings_df.empty or menu_df.empty:
+        return None
+
+    merged = (
+        reviews_df
+        .merge(ratings_df, left_on="rating_id", right_on="id", suffixes=("_review", "_rating"))
+        .merge(menu_df, left_on="menu_item_id", right_on="id", suffixes=("", "_menu"))
+    )
+
+    filtered = merged[merged["name"] == name]
+    if filtered.empty:
+        return None
+
+    taste = filtered["taste"].mean() if "taste" in filtered.columns else 0
+    portion = filtered["portion"].mean() if "portion" in filtered.columns else 0
+    value = filtered["value"].mean() if "value" in filtered.columns else 0
+    overall = filtered["overall"].mean() if "overall" in filtered.columns else 0
+    review_count = int(filtered.shape[0])
+
+    return {
+        "taste": round(float(taste), 1),
+        "portion": round(float(portion), 1),  
+        "value": round(float(value), 1),
+        "overall": round(float(overall), 1),
+        "reviewCount": review_count,
+    }
 
 
 def create_dish_card(dish, rank=None):
     """
     Create a dish card component
-    
-    Args:
-        dish: Dictionary containing dish data
-        rank: Optional rank number to display
-    
-    Returns:
-        Dash HTML component
+
+    dish: can be either a dict from mockData menuItems/reviews merged rows or the legacy dish dict
     """
-    avg_rating = calculate_average_rating(dish)
-    
+    name = dish.get("name") if isinstance(dish, dict) else str(dish)
+
+    agg = _get_aggregated_stats_for_name(name) if name else None
+
+    # prefer values from aggregated data, otherwise fall back to fields on `dish`
+    avg_rating = agg["overall"] if agg else dish.get("rating") or dish.get("avg") or 0
+    taste = agg["taste"] if agg else (dish.get("ratings", {}).get("taste") if isinstance(dish, dict) else 0)
+    portion = agg["portion"] if agg else (dish.get("ratings", {}).get("portion") if isinstance(dish, dict) else 0)
+    value = agg["value"] if agg else (dish.get("ratings", {}).get("value") if isinstance(dish, dict) else 0)
+    review_count = agg["reviewCount"] if agg else dish.get("reviewCount", 0)
+    price = dish.get("price") if isinstance(dish, dict) else None
+    image = dish.get("image") if isinstance(dish, dict) else None
+
     return html.Div(
         className="dish-card",
         children=[
@@ -26,18 +68,11 @@ def create_dish_card(dish, rank=None):
             html.Div(
                 className="dish-image-container",
                 children=[
-                    html.Img(
-                        src=dish["image"],
-                        alt=dish["name"],
-                        className="dish-image"
-                    ),
-                    html.Div(
-                        f"#{rank}",
-                        className="rank-badge"
-                    ) if rank else None
+                    html.Img(src=image, alt=name, className="dish-image") if image else None,
+                    html.Div(f"#{rank}", className="rank-badge") if rank else None,
                 ]
             ),
-            
+
             # Card content
             html.Div(
                 className="dish-card-content",
@@ -48,8 +83,8 @@ def create_dish_card(dish, rank=None):
                         children=[
                             html.Div(
                                 children=[
-                                    html.H3(dish["name"], className="dish-name"),
-                                    html.P(f"${dish['price']}", className="dish-price")
+                                    html.H3(name, className="dish-name"),
+                                    html.P(f"${price}", className="dish-price") if price is not None else None,
                                 ]
                             ),
                             html.Div(
@@ -61,7 +96,7 @@ def create_dish_card(dish, rank=None):
                             )
                         ]
                     ),
-                    
+
                     # Rating details
                     html.Div(
                         className="rating-details",
@@ -71,33 +106,30 @@ def create_dish_card(dish, rank=None):
                                 className="rating-row",
                                 children=[
                                     html.Span("Taste", className="rating-label"),
-                                    html.Span(str(dish["ratings"]["taste"]), className="rating-score")
+                                    html.Span(str(taste), className="rating-score")
                                 ]
                             ),
-                            # Texture
+                            # Portion
                             html.Div(
                                 className="rating-row",
                                 children=[
-                                    html.Span("Texture", className="rating-label"),
-                                    html.Span(str(dish["ratings"]["texture"]), className="rating-score")
+                                    html.Span("Portion", className="rating-label"),
+                                    html.Span(str(portion), className="rating-score")
                                 ]
                             ),
-                            # Bang for Buck
+                            # Value
                             html.Div(
                                 className="rating-row",
                                 children=[
-                                    html.Span("Bang for Buck", className="rating-label"),
-                                    html.Span(str(dish["ratings"]["bangForBuck"]), className="rating-score")
+                                    html.Span("Value", className="rating-label"),
+                                    html.Span(str(value), className="rating-score")
                                 ]
                             )
                         ]
                     ),
-                    
+
                     # Review count
-                    html.P(
-                        f"{dish['reviewCount']} reviews",
-                        className="review-count"
-                    )
+                    html.P(f"{review_count} reviews", className="review-count")
                 ]
             )
         ]

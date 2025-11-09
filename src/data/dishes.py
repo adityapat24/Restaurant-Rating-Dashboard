@@ -1,181 +1,113 @@
+"""Utility functions that build dish summaries from the mockData.json payload.
+
+These functions use `data/loadData.py` to load `src/data/mockData.json` and
+aggregate ratings per menu item (join reviews -> ratings -> menuItems).
+
+Returned dish dicts follow the shape expected by the rest of the app:
+{
+  "id": <menu_item_id>,
+  "name": <menu item name>,
+  "price": <price if available or None>,
+  "ratings": { "taste": <mean>, "texture": <mean mapped from portion>, "bangForBuck": <mean mapped from value> },
+  "reviewCount": <int>
+}
 """
-Mock dish data and utility functions
-"""
 
-dishes = [
-    {
-        "id": 1,
-        "name": "Truffle Mushroom Risotto",
-        "price": 28,
-        "ratings": {
-            "taste": 4.8,
-            "texture": 4.7,
-            "bangForBuck": 4.2
-        },
-        "reviewCount": 156,
-        "image": "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 2,
-        "name": "Grilled Salmon",
-        "price": 32,
-        "ratings": {
-            "taste": 4.6,
-            "texture": 4.8,
-            "bangForBuck": 4.0
-        },
-        "reviewCount": 203,
-        "image": "https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 3,
-        "name": "Margherita Pizza",
-        "price": 16,
-        "ratings": {
-            "taste": 4.9,
-            "texture": 4.6,
-            "bangForBuck": 4.9
-        },
-        "reviewCount": 342,
-        "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 4,
-        "name": "Caesar Salad",
-        "price": 12,
-        "ratings": {
-            "taste": 3.8,
-            "texture": 3.5,
-            "bangForBuck": 3.2
-        },
-        "reviewCount": 128,
-        "image": "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 5,
-        "name": "Chocolate Lava Cake",
-        "price": 10,
-        "ratings": {
-            "taste": 4.7,
-            "texture": 4.5,
-            "bangForBuck": 4.3
-        },
-        "reviewCount": 267,
-        "image": "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 6,
-        "name": "Beef Burger",
-        "price": 18,
-        "ratings": {
-            "taste": 4.4,
-            "texture": 4.2,
-            "bangForBuck": 4.5
-        },
-        "reviewCount": 412,
-        "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 7,
-        "name": "Tomato Soup",
-        "price": 8,
-        "ratings": {
-            "taste": 3.2,
-            "texture": 2.9,
-            "bangForBuck": 3.0
-        },
-        "reviewCount": 89,
-        "image": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 8,
-        "name": "Tiramisu",
-        "price": 12,
-        "ratings": {
-            "taste": 4.5,
-            "texture": 4.6,
-            "bangForBuck": 4.1
-        },
-        "reviewCount": 198,
-        "image": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 9,
-        "name": "Fish Tacos",
-        "price": 14,
-        "ratings": {
-            "taste": 3.5,
-            "texture": 3.3,
-            "bangForBuck": 3.4
-        },
-        "reviewCount": 145,
-        "image": "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 10,
-        "name": "Lobster Bisque",
-        "price": 22,
-        "ratings": {
-            "taste": 4.6,
-            "texture": 4.4,
-            "bangForBuck": 3.8
-        },
-        "reviewCount": 176,
-        "image": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 11,
-        "name": "Garlic Bread",
-        "price": 6,
-        "ratings": {
-            "taste": 2.8,
-            "texture": 2.5,
-            "bangForBuck": 2.7
-        },
-        "reviewCount": 94,
-        "image": "https://images.unsplash.com/photo-1573140401552-388e3c0b4972?w=400&h=300&fit=crop"
-    },
-    {
-        "id": 12,
-        "name": "Panna Cotta",
-        "price": 11,
-        "ratings": {
-            "taste": 4.3,
-            "texture": 4.4,
-            "bangForBuck": 4.0
-        },
-        "reviewCount": 132,
-        "image": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=300&fit=crop"
-    }
-]
+from typing import List, Dict, Optional
+import pandas as pd
+from data.loadData import loadData
 
 
-def calculate_average_rating(dish):
-    """Calculate the average rating across all three dimensions"""
-    ratings = dish["ratings"]
-    avg = (ratings["taste"] + ratings["texture"] + ratings["bangForBuck"]) / 3
-    return round(avg, 1)
+def _build_aggregated_menu() -> List[Dict]:
+    """Return a list of aggregated menu items constructed from mockData.json.
 
+    This function is idempotent and intentionally lightweight — it rebuilds
+    the aggregation on each call (data is small). If you prefer, we can add
+    simple caching later.
+    """
+    data = loadData()
 
-def get_all_dishes():
-    """Return all dishes"""
+    reviews = pd.DataFrame(data.get("reviews", []))
+    ratings = pd.DataFrame(data.get("ratings", []))
+    menu = pd.DataFrame(data.get("menuItems", []))
+
+    if reviews.empty or ratings.empty or menu.empty:
+        # If any piece is missing, fall back to an empty list
+        return []
+
+    # Join reviews -> ratings to attribute rating values to menu_item_id
+    merged = reviews.merge(ratings, left_on="rating_id", right_on="id", suffixes=("_review", "_rating"))
+    merged = merged.merge(menu, left_on="menu_item_id", right_on="id", suffixes=("", "_menu"))
+
+    # For each menu item compute mean taste, portion (map to texture), value (map to bangForBuck), and overall mean
+    agg = (
+        merged
+        .groupby(["menu_item_id", "name"], as_index=False)
+        .agg(
+            taste_mean=("taste", "mean"),
+            portion_mean=("portion", "mean"),
+            value_mean=("value", "mean"),
+            overall_mean=("overall", "mean"),
+            review_count=("rating_id", "count"),
+        )
+    )
+
+    dishes: List[Dict] = []
+    for row in agg.to_dict(orient="records"):
+        dishes.append({
+            "id": int(row.get("menu_item_id")),
+            "name": row.get("name"),
+            "price": None,  # price not present in mockData.json menuItems; keep None
+            "ratings": {
+                "taste": round(float(row.get("taste_mean", 0) or 0), 1),
+                "texture": round(float(row.get("portion_mean", 0) or 0), 1),
+                "bangForBuck": round(float(row.get("value_mean", 0) or 0), 1),
+            },
+            "overall": round(float(row.get("overall_mean", 0) or 0), 1),
+            "reviewCount": int(row.get("review_count", 0) or 0),
+        })
+
     return dishes
 
 
-def get_top_rated_dishes(count=5):
-    """Get the top N rated dishes"""
-    sorted_dishes = sorted(
-        dishes, 
-        key=lambda d: calculate_average_rating(d), 
-        reverse=True
-    )
+def calculate_average_rating(dish: Dict) -> float:
+    """Calculate the average rating for a dish dict.
+
+    If `dish` already has an explicit `overall` field (from aggregation), prefer
+    that. Otherwise fall back to averaging taste/texture/bangForBuck.
+    """
+    if not isinstance(dish, dict):
+        return 0.0
+
+    if "overall" in dish and dish.get("overall") is not None:
+        try:
+            return round(float(dish.get("overall")), 1)
+        except Exception:
+            pass
+
+    ratings = dish.get("ratings", {})
+    taste = float(ratings.get("taste", 0) or 0)
+    texture = float(ratings.get("texture", 0) or 0)
+    bang = float(ratings.get("bangForBuck", 0) or 0)
+    avg = (taste + texture + bang) / 3 if (taste or texture or bang) else 0.0
+    return round(avg, 1)
+
+
+def get_all_dishes() -> List[Dict]:
+    """Return the aggregated list of menu items with rating summaries."""
+    return _build_aggregated_menu()
+
+
+def get_top_rated_dishes(count: int = 5) -> List[Dict]:
+    """Get the top N rated dishes by average (overall) rating."""
+    all_d = get_all_dishes()
+    sorted_dishes = sorted(all_d, key=lambda d: calculate_average_rating(d), reverse=True)
     return sorted_dishes[:count]
 
 
-def get_bottom_rated_dishes(count=5):
-    """Get the bottom N rated dishes"""
-    sorted_dishes = sorted(
-        dishes, 
-        key=lambda d: calculate_average_rating(d)
-    )
+def get_bottom_rated_dishes(count: int = 5) -> List[Dict]:
+    """Get the bottom N rated dishes by average (overall) rating."""
+    all_d = get_all_dishes()
+    sorted_dishes = sorted(all_d, key=lambda d: calculate_average_rating(d))
     return sorted_dishes[:count]
+

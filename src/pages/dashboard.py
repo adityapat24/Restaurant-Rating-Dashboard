@@ -8,7 +8,7 @@ from data.dishes import (
 )
 from components.dish_card import create_dish_card
 from components.charts import (
-    create_histogram_price_ranges,
+    create_all_stats_over_time_chart,
     create_performance_chart,
     create_review_charts,
 )
@@ -124,11 +124,10 @@ layout = html.Div(
                 html.Div(
                     className="chart-wrapper",
                     children=[
-                        dcc.Graph(
-                            id="price-histogram",
-                            figure=create_histogram_price_ranges(),
-                            config={"displayModeBar": False},
-                        )
+                        # create_all_stats_over_time_chart() returns a Dash container
+                        # (dropdown + graph). Insert it directly instead of trying
+                        # to use it as a figure for dcc.Graph.
+                        create_all_stats_over_time_chart()
                     ],
                 ),
             ],
