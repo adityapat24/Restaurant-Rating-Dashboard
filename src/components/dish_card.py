@@ -8,7 +8,7 @@ from data.loadData import loadData
 
 
 def _get_aggregated_stats_for_name(name: str):
-    """Return aggregated (taste, texture (portion), bangForBuck (value), overall, review_count) for a menu item name."""
+    """Return aggregated (taste, portion, value, overall, review_count) for a menu item name."""
     data = loadData()
     reviews_df = pd.DataFrame(data.get("reviews", []))
     ratings_df = pd.DataFrame(data.get("ratings", []))
@@ -35,8 +35,8 @@ def _get_aggregated_stats_for_name(name: str):
 
     return {
         "taste": round(float(taste), 1),
-        "texture": round(float(portion), 1),  # map portion -> texture
-        "bangForBuck": round(float(value), 1),
+        "portion": round(float(portion), 1),  
+        "value": round(float(value), 1),
         "overall": round(float(overall), 1),
         "reviewCount": review_count,
     }
@@ -55,8 +55,8 @@ def create_dish_card(dish, rank=None):
     # prefer values from aggregated data, otherwise fall back to fields on `dish`
     avg_rating = agg["overall"] if agg else dish.get("rating") or dish.get("avg") or 0
     taste = agg["taste"] if agg else (dish.get("ratings", {}).get("taste") if isinstance(dish, dict) else 0)
-    texture = agg["texture"] if agg else (dish.get("ratings", {}).get("texture") if isinstance(dish, dict) else 0)
-    bang = agg["bangForBuck"] if agg else (dish.get("ratings", {}).get("bangForBuck") if isinstance(dish, dict) else 0)
+    portion = agg["portion"] if agg else (dish.get("ratings", {}).get("portion") if isinstance(dish, dict) else 0)
+    value = agg["value"] if agg else (dish.get("ratings", {}).get("value") if isinstance(dish, dict) else 0)
     review_count = agg["reviewCount"] if agg else dish.get("reviewCount", 0)
     price = dish.get("price") if isinstance(dish, dict) else None
     image = dish.get("image") if isinstance(dish, dict) else None
@@ -109,20 +109,20 @@ def create_dish_card(dish, rank=None):
                                     html.Span(str(taste), className="rating-score")
                                 ]
                             ),
-                            # Texture
+                            # Portion
                             html.Div(
                                 className="rating-row",
                                 children=[
-                                    html.Span("Texture", className="rating-label"),
-                                    html.Span(str(texture), className="rating-score")
+                                    html.Span("Portion", className="rating-label"),
+                                    html.Span(str(portion), className="rating-score")
                                 ]
                             ),
-                            # Bang for Buck
+                            # Value
                             html.Div(
                                 className="rating-row",
                                 children=[
-                                    html.Span("Bang for Buck", className="rating-label"),
-                                    html.Span(str(bang), className="rating-score")
+                                    html.Span("Value", className="rating-label"),
+                                    html.Span(str(value), className="rating-score")
                                 ]
                             )
                         ]

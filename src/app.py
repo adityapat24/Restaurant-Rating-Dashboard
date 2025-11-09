@@ -61,6 +61,15 @@ content = html.Div(
 # ----------------------------
 app.layout = html.Div([sidebar, content])
 
+# Register callbacks from components that need the Dash app
+try:
+    from components.charts import register_all_stats_callbacks
+    register_all_stats_callbacks(app)
+except Exception:
+    # If import fails in environments where dash isn't installed yet,
+    # it's okay — the user should install requirements and restart the app.
+    pass
+
 # ----------------------------
 # Run the App
 # ----------------------------

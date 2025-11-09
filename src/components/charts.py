@@ -9,6 +9,9 @@ from faker import Faker
 import plotly.express as px
 import plotly.graph_objects as go
 from data.loadData import loadData
+from dash import dcc, html, Input, Output
+
+
 
 
 # Helper to build merged dataframe from mockData.json
@@ -137,6 +140,33 @@ def create_performance_chart():
     return fig
 
 
+def create_all_stats_over_time_chart():
+    merged = _build_merged_df()
+    merged["Date"] = pd.to_datetime(merged["timestamp"], errors="coerce")
+    years = sorted(merged["Date"].dt.year.dropna().unique().astype(int).tolist())
+
+    # Create a component (dropdown + graph). The app should call register_all_stats_callbacks(app)
+    dropdown = dcc.Dropdown(
+        id="all-stats-year-dropdown",
+        options=[{"label": str(y), "value": int(y)} for y in years],
+        value=years[-1] if years else None,
+        clearable=False,
+        placeholder="Select year"
+    )
+
+    # Use the figure helper so plotting logic is centralized.
+    selected_year = years[-1] if years else None
+    initial_fig = create_all_stats_figure_for_year(selected_year, merged) if selected_year is not None else go.Figure()
+
+    container = html.Div(
+        children=[
+            html.Div(children=[dropdown], style={"width": "200px", "marginBottom": "12px"}),
+            dcc.Graph(id="all-stats-graph", figure=initial_fig, config={"displayModeBar": False})
+        ]
+    )
+
+    return container
+
 
 def create_review_charts():
     """
@@ -250,3 +280,80 @@ def create_review_charts():
     scatter_fig.update_layout(xaxis_title="Date", yaxis_title="Overall Rating")
 
     return scatter_fig, line_fig
+
+
+def create_all_stats_figure_for_year(year: int, merged: pd.DataFrame) -> go.Figure:
+    """Utility: return the figure for a specific year (used by callbacks)."""
+    if merged.empty:
+        return go.Figure()
+
+    if "timestamp" in merged.columns:
+        merged["Date"] = pd.to_datetime(merged["timestamp"], errors="coerce")
+    elif "Date" in merged.columns:
+        merged["Date"] = pd.to_datetime(merged["Date"], errors="coerce")
+    else:
+        return go.Figure()
+
+    merged["YearMonth"] = merged["Date"].dt.to_period("M").astype(str)
+    merged["Year"] = merged["Date"].dt.year
+
+    # Use explicit overall
+    merged["Overall"] = merged["overall"].astype(float)
+
+    agg_cols = {"Overall": ("Overall", "mean")}
+    if "taste" in merged.columns:
+        agg_cols["Taste"] = ("taste", "mean")
+    if "portion" in merged.columns:
+        agg_cols["Portion"] = ("portion", "mean")
+    if "value" in merged.columns:
+        agg_cols["Value"] = ("value", "mean")
+
+    monthly = merged.groupby("YearMonth").agg(**agg_cols).reset_index()
+    for col in ["Overall", "Taste", "Portion", "Value"]:
+        if col not in monthly.columns:
+            monthly[col] = 0
+
+    # YearMonth is YYYY-MM — append day and parse using %Y-%m-%d
+    monthly["Year"] = pd.to_datetime(monthly["YearMonth"] + "-01", format="%Y-%m-%d", errors="coerce").dt.year
+    df = monthly[monthly["Year"] == int(year)].sort_values("YearMonth")
+
+    fig = go.Figure()
+    if not df.empty:
+        fig.add_trace(go.Scatter(x=df["YearMonth"], y=df["Overall"], mode="lines+markers", name="Overall", marker=dict(size=6), line=dict(color="#7c3aed")))
+        fig.add_trace(go.Scatter(x=df["YearMonth"], y=df["Taste"], mode="lines+markers", name="Taste", marker=dict(size=6), line=dict(color="#ef4444")))
+        fig.add_trace(go.Scatter(x=df["YearMonth"], y=df["Portion"], mode="lines+markers", name="Portion", marker=dict(size=6), line=dict(color="#3b82f6")))
+        fig.add_trace(go.Scatter(x=df["YearMonth"], y=df["Value"], mode="lines+markers", name="Value", marker=dict(size=6), line=dict(color="#10b981")))
+
+    fig.update_layout(
+        title={"text": f"Ratings Trend Over Time — {year}", "font": {"size": 16, "color": "#1f2937"}},
+        xaxis_title="Month",
+        yaxis_title="Average Rating",
+        yaxis=dict(range=[0, 5]),
+        hovermode="x unified",
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        font=dict(family='Arial, sans-serif', size=12, color="#4b5563"),
+        height=420,
+        margin=dict(l=60, r=30, t=80, b=80),
+    )
+
+    fig.update_xaxes(showgrid=False)
+    fig.update_yaxes(showgrid=True, gridcolor="#e5e7eb")
+
+    return fig
+
+
+def register_all_stats_callbacks(app):
+    """Register callbacks for the All Stats chart. Call this after Dash app creation.
+
+    Example (in `app.py`):
+        from components.charts import register_all_stats_callbacks
+        register_all_stats_callbacks(app)
+    """
+
+    @app.callback(Output("all-stats-graph", "figure"), Input("all-stats-year-dropdown", "value"))
+    def _update_all_stats_graph(selected_year):
+        if not selected_year:
+            return go.Figure()
+        return create_all_stats_figure_for_year(selected_year, _build_merged_df())
+

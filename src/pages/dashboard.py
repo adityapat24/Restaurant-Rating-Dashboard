@@ -8,6 +8,7 @@ from data.dishes import (
 )
 from components.dish_card import create_dish_card
 from components.charts import (
+    create_all_stats_over_time_chart,
     create_performance_chart,
     create_review_charts,
 )
@@ -103,6 +104,15 @@ layout = html.Div(
                             figure=create_performance_chart(),
                             config={"displayModeBar": False},
                         )
+                    ],
+                ),
+                html.Div(
+                    className="chart-wrapper",
+                    children=[
+                        # create_all_stats_over_time_chart() returns a Dash container
+                        # (dropdown + graph). Insert it directly instead of trying
+                        # to use it as a figure for dcc.Graph.
+                        create_all_stats_over_time_chart()
                     ],
                 ),
             ],
