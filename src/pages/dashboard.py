@@ -8,7 +8,6 @@ from data.dishes import (
 )
 from components.dish_card import create_dish_card
 from components.charts import (
-    create_histogram_price_ranges,
     create_performance_chart,
     create_review_charts,
 )
@@ -102,16 +101,6 @@ layout = html.Div(
                         dcc.Graph(
                             id="performance-chart",
                             figure=create_performance_chart(),
-                            config={"displayModeBar": False},
-                        )
-                    ],
-                ),
-                html.Div(
-                    className="chart-wrapper",
-                    children=[
-                        dcc.Graph(
-                            id="price-histogram",
-                            figure=create_histogram_price_ranges(),
                             config={"displayModeBar": False},
                         )
                     ],
