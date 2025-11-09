@@ -1,223 +1,68 @@
 """
 Restaurant Analytics Dashboard - Main Application
-Built with Dash and Plotly
+Multi-page setup with Sidebar Navigation
 """
 
 import dash
-from dash import dcc, html, Input, Output
-import plotly.graph_objects as go
-from data.dishes import (
-    get_top_rated_dishes,
-    get_bottom_rated_dishes,
-    get_all_dishes,
-    calculate_average_rating
-)
-from components.dish_card import create_dish_card
-from components.charts import (
-    create_histogram_price_ranges,
-    create_performance_chart,
-    create_histogram_price_ranges,
-    create_review_charts,
-)
-from components.customerSatisfactionMetrics.montlyOverallRating import (
-    create_monthly_mean_rating_chart
-)
+from dash import html, dcc
+import dash_bootstrap_components as dbc
 
-from components.customerSatisfactionMetrics.monthlyTastePortionValue import (
-    create_monthly_category_ratings_chart
-)
-
-from components.customerSatisfactionMetrics.customer_return import (
-    create_customer_return_chart
-)
-
-from components.operationalMetrics.lastTenReviews import (
-    create_last_ten_reviews_table
-)
-
-# Initialize the Dash app
+# Initialize Dash app with multi-page support
 app = dash.Dash(
     __name__,
+    use_pages=True,  # Enables multiple pages
     title="Platemate Restaurant Analytics Dashboard",
-    suppress_callback_exceptions=True
+    suppress_callback_exceptions=True,
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
+)
+server = app.server  # For deployment (e.g. Render, Heroku)
+
+# ----------------------------
+# Sidebar for navigation
+# ----------------------------
+sidebar = html.Div(
+    [
+        html.H2("🍽️ Platemate", className="display-6", style={"textAlign": "center"}),
+        html.Hr(),
+        dbc.Nav(
+            [
+                dbc.NavLink("🏠 Dashboard", href="/", active="exact"),
+                dbc.NavLink("📊 Dish Analytics", href="/dish-stats", active="exact"),
+            ],
+            vertical=True,
+            pills=True,
+        ),
+    ],
+    style={
+        "position": "fixed",
+        "top": 0,
+        "left": 0,
+        "bottom": 0,
+        "width": "220px",
+        "padding": "20px",
+        "backgroundColor": "#f8f9fa",
+    },
 )
 
-recent_reviews_fig, reviews_line_fig = create_review_charts()
-monthly_rating_fig = create_monthly_mean_rating_chart()
-monthly_category_fig = create_monthly_category_ratings_chart()
-customer_return = create_customer_return_chart()
-last_10_reviews_fig = create_last_ten_reviews_table()
-
-# Define the layout
-app.layout = html.Div(
-    className="app-container",
-    children=[
-        # Header
-        html.Div(
-            className="header",
-            children=[
-                html.Div(
-                    className="header-content",
-                    children=[
-                        # Icon and Title
-                        html.Div(
-                            className="header-title-row",
-                            children=[
-                                html.Span("🍴", className="header-icon"),
-                                html.H1("Platemate Restaurant Analytics Dashboard", className="header-title")
-                            ]
-                        ),
-                        html.P(
-                            "Track dish performance and identify areas for improvement",
-                            className="header-subtitle"
-                        )
-                    ]
-                )
-            ]
-        ),
-        
-        # Main Content
-        html.Div(
-            className="main-content",
-            children=[
-                # Tabs for Top/Bottom Rated
-                html.Div(
-                    className="tabs-container",
-                    children=[
-                        dcc.Tabs(
-                            id="dish-tabs",
-                            value="top",
-                            className="custom-tabs",
-                            children=[
-                                dcc.Tab(
-                                    label="📈 Top Rated",
-                                    value="top",
-                                    className="custom-tab",
-                                    selected_className="custom-tab--selected"
-                                ),
-                                dcc.Tab(
-                                    label="📉 Needs Improvement",
-                                    value="bottom",
-                                    className="custom-tab",
-                                    selected_className="custom-tab--selected"
-                                )
-                            ]
-                        ),
-                        html.Div(id="dish-cards-container", className="dish-cards-grid")
-                    ]
-                ),
-                
-                # Charts
-                html.Div(
-                    className="charts-container",
-                    children=[
-                        html.Div(
-                            className="chart-wrapper",
-                            children=[
-                                dcc.Graph(
-                                    id="performance-chart",
-                                    figure=create_performance_chart(),
-                                    config={'displayModeBar': False}
-                                )
-                            ]
-                        ),
-                        # Price range histogram
-                        html.Div(
-                            className="chart-wrapper",
-                            children=[
-                                dcc.Graph(
-                                    id="price-histogram",
-                                    figure=create_histogram_price_ranges(),
-                                    config={'displayModeBar': False}
-                                )
-                            ]
-                        )
-
-                    ]
-                ),
-                html.Hr(style={"marginTop": "60px", "marginBottom": "30px"}),
-
-html.Div(
-    className="reviews-section",
-    children=[
-        html.H2("🗒️ Customer Reviews", style={"textAlign": "center", "marginBottom": "20px"}),
-        html.Div(
-            className="chart-wrapper",
-            children=[
-                dcc.Graph(
-                    id="reviews-over-time",
-                    figure=reviews_line_fig,
-                    config={'displayModeBar': False}
-                )
-            ]
-        ),
-        html.Div(
-            className="chart-wrapper",
-            children=[
-                dcc.Graph(
-                    id="monthly-mean-rating-chart",
-                    figure=create_monthly_mean_rating_chart(),
-                    config={'displayModeBar': False}
-                )
-            ]
-        ),
-        html.Div(
-            className="chart-wrapper",
-            children=[
-                dcc.Graph(
-                    id="monthly-category-rating-chart",
-                    figure=monthly_category_fig,
-                    config={'displayModeBar': False}
-                )
-            ]
-        ),
-        html.Div(
-            className="chart-wrapper",
-            children=[
-                dcc.Graph(
-                    id="customer_return",
-                    figure=customer_return,
-                    config={'displayModeBar': False}
-                )
-            ]
-        ),
-
-        html.Div(
-            className="chart-wrapper",
-            children=[
-                dcc.Graph(
-                    id="last_ten_reviews",
-                    figure=last_10_reviews_fig,
-                    config={'displayModeBar': False}
-                )
-            ]
-        )
-    ]
+# ----------------------------
+# Main content area (page container)
+# ----------------------------
+content = html.Div(
+    dash.page_container,
+    style={
+        "marginLeft": "240px",
+        "marginRight": "20px",
+        "padding": "20px 10px",
+    },
 )
 
+# ----------------------------
+# App Layout
+# ----------------------------
+app.layout = html.Div([sidebar, content])
 
-            ]
-        )
-    ]
-)
-
-
-# Callback to update dish cards based on selected tab
-@app.callback(
-    Output("dish-cards-container", "children"),
-    Input("dish-tabs", "value")
-)
-def update_dish_cards(tab_value):
-    if tab_value == "top":
-        dishes = get_top_rated_dishes(5)
-    else:
-        dishes = get_bottom_rated_dishes(5)
-    
-    cards = []
-    for index, dish in enumerate(dishes):
-        cards.append(create_dish_card(dish, rank=index + 1))
-    
-    return cards
-
+# ----------------------------
+# Run the App
+# ----------------------------
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8050)
+    app.run(debug=True, port=8050)
