@@ -25,6 +25,17 @@ from components.operationalMetrics.lastTenReviews import (
     create_last_ten_reviews_table,
 )
 
+from components.customerSatisfactionMetrics.CategoryKPI import (
+    create_category_kpi_cards,
+)
+
+from components.operationalMetrics.OvertimeRating import (
+    create_average_rating_over_time,
+)
+
+from components.operationalMetrics.UniqueIndex import (
+    create_reviewer_diversity_chart,
+)
 # Register the page
 dash.register_page(__name__, path="/", name="Dashboard")
 
@@ -34,7 +45,11 @@ monthly_rating_fig = create_monthly_mean_rating_chart()
 monthly_category_fig = create_monthly_category_ratings_chart()
 customer_return_fig = create_customer_return_chart()
 last_10_reviews_table = create_last_ten_reviews_table()
+category_kpi_fig = create_category_kpi_cards()
+average_rating_fig = create_average_rating_over_time()
+unique_customer_index_fig = create_reviewer_diversity_chart()
 
+# Define page layout
 # Define page layout
 layout = html.Div(
     className="app-container",
@@ -119,6 +134,64 @@ layout = html.Div(
             ],
         ),
 
+        # Operational Metrics Section
+        html.Div(
+            className="operational-metrics-section",
+            style={
+                "backgroundColor": "#fafafa",
+                "borderRadius": "12px",
+                "padding": "30px",
+                "margin": "40px auto",
+                "width": "95%",
+            },
+            children=[
+                html.H2(
+                    "⚙️ Operational Metrics",
+                    style={
+                        "textAlign": "center",
+                        "marginTop": "20px",
+                        "marginBottom": "30px",
+                    },
+                ),
+
+                # KPI Cards
+                html.Div(
+                    className="chart-wrapper",
+                    children=[
+                        dcc.Graph(
+                            id="category-kpi-cards",
+                            figure=category_kpi_fig,
+                            config={"displayModeBar": False},
+                        )
+                    ],
+                ),
+
+                # Average Rating Over Time
+                html.Div(
+                    className="chart-wrapper",
+                    children=[
+                        dcc.Graph(
+                            id="average-rating-over-time",
+                            figure=average_rating_fig,
+                            config={"displayModeBar": False},
+                        )
+                    ],
+                ),
+
+                # Unique Customer Index
+                html.Div(
+                    className="chart-wrapper",
+                    children=[
+                        dcc.Graph(
+                            id="unique-customer-index-chart",
+                            figure=unique_customer_index_fig,
+                            config={"displayModeBar": False},
+                        )
+                    ],
+                ),
+            ],
+        ),
+
         html.Hr(style={"marginTop": "60px", "marginBottom": "30px"}),
 
         # Customer Reviews Section
@@ -188,7 +261,6 @@ layout = html.Div(
         ),
     ],
 )
-
 
 # Register callback for tab interaction (must use dash.get_app() when using pages)
 from dash import callback, Output, Input

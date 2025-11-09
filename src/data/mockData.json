@@ -1307,7 +1307,8 @@
           { "id": 49, "content": "The texture was off, but the seasoning was solid." },
           { "id": 50, "content": "Everything was tasty, and the experience was enjoyable overall." }
         ],
-        "reviews": [{"id":1,"rating_id":737,"content_id":35,"reviewer_id":79,"timestamp":"9/11/2024","menu_item_id":42},
+        "reviews": [
+        {"id":1,"rating_id":737,"content_id":35,"reviewer_id":79,"timestamp":"9/11/2024","menu_item_id":42},
         {"id":2,"rating_id":180,"content_id":11,"reviewer_id":69,"timestamp":"10/2/2025","menu_item_id":18},
         {"id":3,"rating_id":987,"content_id":24,"reviewer_id":84,"timestamp":"12/4/2024","menu_item_id":4},
         {"id":4,"rating_id":594,"content_id":43,"reviewer_id":123,"timestamp":"5/16/2024","menu_item_id":6},
