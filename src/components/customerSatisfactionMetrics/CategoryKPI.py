@@ -142,4 +142,3 @@ def create_category_kpi_cards(period="overall"):
 if __name__ == "__main__":
     fig = create_category_kpi_cards()
     fig.write_html("category_kpi_cards.html")
-    print("✅ KPI Cards saved! Open 'category_kpi_cards.html' in your browser")

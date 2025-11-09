@@ -1,15 +1,28 @@
 """
 Restaurant Analytics Dashboard - Main Application
-Multi-page setup with Sidebar Navigation
+Built with Dash and Plotly
 """
 
 import dash
-from dash import html, dcc
-import dash_bootstrap_components as dbc
+from dash import dcc, html, Input, Output
+import plotly.graph_objects as go
+from data.dishes import (
+    get_top_rated_dishes,
+    get_bottom_rated_dishes,
+    get_all_dishes,
+    calculate_average_rating
+)
+from components.dish_card import create_dish_card
+from components.charts import (
+    create_histogram_price_ranges,
+    create_performance_chart,
+    create_histogram_price_ranges,
+    create_review_charts,
+)
+from components.customerSatisfactionMetrics.montlyOverallRating import (
+    create_monthly_mean_rating_chart
+)
 
-<<<<<<< Updated upstream
-# Initialize Dash app with multi-page support
-=======
 from components.customerSatisfactionMetrics.monthlyTastePortionValue import (
     create_monthly_category_ratings_chart
 )
@@ -31,68 +44,13 @@ from components.customerSatisfactionMetrics.CategoryKPI import (
 )
 
 
-# Initialize the Dash app
->>>>>>> Stashed changes
+# The Dash app
 app = dash.Dash(
     __name__,
-    use_pages=True,  # Enables multiple pages
     title="Platemate Restaurant Analytics Dashboard",
-    suppress_callback_exceptions=True,
-    external_stylesheets=[dbc.themes.BOOTSTRAP],
-)
-server = app.server  # For deployment (e.g. Render, Heroku)
-
-# ----------------------------
-# Sidebar for navigation
-# ----------------------------
-sidebar = html.Div(
-    [
-        html.H2("🍽️ Platemate", className="display-6", style={"textAlign": "center"}),
-        html.Hr(),
-        dbc.Nav(
-            [
-                dbc.NavLink("🏠 Dashboard", href="/", active="exact"),
-                dbc.NavLink("📊 Dish Analytics", href="/dish-stats", active="exact"),
-            ],
-            vertical=True,
-            pills=True,
-        ),
-    ],
-    style={
-        "position": "fixed",
-        "top": 0,
-        "left": 0,
-        "bottom": 0,
-        "width": "220px",
-        "padding": "20px",
-        "backgroundColor": "#f8f9fa",
-    },
+    suppress_callback_exceptions=True
 )
 
-<<<<<<< Updated upstream
-# ----------------------------
-# Main content area (page container)
-# ----------------------------
-content = html.Div(
-    dash.page_container,
-    style={
-        "marginLeft": "240px",
-        "marginRight": "20px",
-        "padding": "20px 10px",
-    },
-)
-
-# ----------------------------
-# App Layout
-# ----------------------------
-app.layout = html.Div([sidebar, content])
-
-# ----------------------------
-# Run the App
-# ----------------------------
-if __name__ == "__main__":
-    app.run(debug=True, port=8050)
-=======
 recent_reviews_fig, reviews_line_fig = create_review_charts()
 monthly_rating_fig = create_monthly_mean_rating_chart()
 monthly_category_fig = create_monthly_category_ratings_chart()
@@ -206,9 +164,9 @@ app.layout = html.Div(
                                         dcc.Dropdown(
                                             id="kpi-period-dropdown",
                                             options=[
-                                                {"label": "📊 Overall (All Time)", "value": "overall"},
-                                                {"label": "📅 This Month", "value": "month"},
-                                                {"label": "📆 This Week", "value": "week"}
+                                                {"label": "Overall (All Time)", "value": "overall"},
+                                                {"label": "This Month", "value": "month"},
+                                                {"label": "This Week", "value": "week"}
                                             ],
                                             value="overall",
                                             clearable=False,
@@ -325,4 +283,3 @@ def update_kpi_cards(period):
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8050)
->>>>>>> Stashed changes

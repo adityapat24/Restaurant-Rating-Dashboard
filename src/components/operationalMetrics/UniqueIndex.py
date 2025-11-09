@@ -78,14 +78,14 @@ def create_reviewer_diversity_chart():
 if __name__ == "__main__":
     fig = create_reviewer_diversity_chart()
     fig.write_html("reviewer_diversity.html")
-    print("✅ Chart saved! Open 'reviewer_diversity.html' in your browser")
+    print("Chart saved! Open 'reviewer_diversity.html' in your browser")
     
     # Print quick stats
     data = loadData()
     reviews_df = pd.DataFrame(data["reviews"])
     reviewer_counts = reviews_df["reviewer_id"].value_counts()
     
-    print(f"\n📊 Quick Stats:")
+    print(f"Quick Stats:")
     print(f"Total Unique Reviewers: {len(reviewer_counts)}")
     print(f"One-Time Reviewers: {(reviewer_counts == 1).sum()}")
     print(f"Repeat Reviewers: {(reviewer_counts > 1).sum()}")
