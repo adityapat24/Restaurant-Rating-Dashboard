@@ -19,6 +19,21 @@ from components.charts import (
     create_histogram_price_ranges,
     create_review_charts,
 )
+from components.customerSatisfactionMetrics.montlyOverallRating import (
+    create_monthly_mean_rating_chart
+)
+
+from components.customerSatisfactionMetrics.monthlyTastePortionValue import (
+    create_monthly_category_ratings_chart
+)
+
+from components.customerSatisfactionMetrics.customer_return import (
+    create_customer_return_chart
+)
+
+from components.operationalMetrics.lastTenReviews import (
+    create_last_ten_reviews_table
+)
 
 # Initialize the Dash app
 app = dash.Dash(
@@ -28,6 +43,10 @@ app = dash.Dash(
 )
 
 recent_reviews_fig, reviews_line_fig = create_review_charts()
+monthly_rating_fig = create_monthly_mean_rating_chart()
+monthly_category_fig = create_monthly_category_ratings_chart()
+customer_return = create_customer_return_chart()
+last_10_reviews_fig = create_last_ten_reviews_table()
 
 # Define the layout
 app.layout = html.Div(
@@ -122,17 +141,6 @@ html.Div(
     className="reviews-section",
     children=[
         html.H2("🗒️ Customer Reviews", style={"textAlign": "center", "marginBottom": "20px"}),
-
-        html.Div(
-            className="chart-wrapper",
-            children=[
-                dcc.Graph(
-                    id="recent-reviews-chart",
-                    figure=recent_reviews_fig,
-                    config={'displayModeBar': False}
-                )
-            ]
-        ),
         html.Div(
             className="chart-wrapper",
             children=[
@@ -142,9 +150,52 @@ html.Div(
                     config={'displayModeBar': False}
                 )
             ]
+        ),
+        html.Div(
+            className="chart-wrapper",
+            children=[
+                dcc.Graph(
+                    id="monthly-mean-rating-chart",
+                    figure=create_monthly_mean_rating_chart(),
+                    config={'displayModeBar': False}
+                )
+            ]
+        ),
+        html.Div(
+            className="chart-wrapper",
+            children=[
+                dcc.Graph(
+                    id="monthly-category-rating-chart",
+                    figure=monthly_category_fig,
+                    config={'displayModeBar': False}
+                )
+            ]
+        ),
+        html.Div(
+            className="chart-wrapper",
+            children=[
+                dcc.Graph(
+                    id="customer_return",
+                    figure=customer_return,
+                    config={'displayModeBar': False}
+                )
+            ]
+        ),
+
+        html.Div(
+            className="chart-wrapper",
+            children=[
+                dcc.Graph(
+                    id="last_ten_reviews",
+                    figure=last_10_reviews_fig,
+                    config={'displayModeBar': False}
+                )
+            ]
         )
     ]
 )
+
+
             ]
         )
     ]
