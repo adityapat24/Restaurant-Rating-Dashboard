@@ -1,32 +1,37 @@
 import dash
 from dash import dcc, html, Input, Output, State
-import plotly.express as px
 import pandas as pd
 from data.loadData import loadData
 
+# Import dish insights
+
+from components.dishStats.dishOverall import create_dish_overall_pie
+from components.dishStats.dishCategoryBreakdown import create_dish_category_breakdown
+from components.dishStats.dishSentiment import create_dish_sentiment_chart
+from components.dishStats.dishOrdersOverTime import create_dish_orders_over_time
+
 dash.register_page(__name__, path="/dish-stats", name="Dish Analytics")
 
+# Load data once
 # Load data once
 data = loadData()
 reviews_df = pd.DataFrame(data["reviews"])
 ratings_df = pd.DataFrame(data["ratings"])
 menu_df = pd.DataFrame(data["menuItems"])
+content_df = pd.DataFrame(data["content"])  # <--- add this
 
-# Merge to get dish names with ratings
-merged_df = reviews_df.merge(
-    ratings_df, left_on="rating_id", right_on="id", suffixes=("_review", "_rating")
-)
-merged_df = merged_df.merge(
-    menu_df, left_on="menu_item_id", right_on="id", suffixes=("", "_menu")
+# Merge reviews with ratings and menu
+merged_df = (
+    reviews_df
+    .merge(ratings_df, left_on="rating_id", right_on="id", suffixes=("_review", "_rating"))
+    .merge(menu_df, left_on="menu_item_id", right_on="id", suffixes=("", "_menu"))
+    .merge(content_df, left_on="content_id", right_on="id", suffixes=("", "_content"))  # <--- merge in content text
 )
 
-# Layout for the page
+
 layout = html.Div(
     [
-        html.H2(
-            "🍽️ Individual Dish Analytics",
-            style={"textAlign": "center", "marginBottom": "20px"},
-        ),
+        html.H2("🍽️ Individual Dish Analytics", style={"textAlign": "center", "marginBottom": "20px"}),
 
         html.Div(
             [
@@ -37,49 +42,42 @@ layout = html.Div(
                     style={"width": "50%", "display": "inline-block", "marginRight": "10px"},
                 ),
                 html.Button(
-                    "View Stats",
+                    "View Insights",
                     id="view-stats-btn",
                     n_clicks=0,
                     className="btn btn-primary",
-                    style={"verticalAlign": "middle"},
+                    style={"verticalAlign": "middle"}
                 ),
             ],
             style={"textAlign": "center", "marginBottom": "25px"},
         ),
 
-        # Start with no figure shown
-        html.Div(id="dish-rating-container", style={"textAlign": "center"}),
+        html.Div(id="dish-insights-container"),
     ]
 )
 
-
-# Callback to generate the chart only after clicking
 @dash.callback(
-    Output("dish-rating-container", "children"),
+    Output("dish-insights-container", "children"),
     Input("view-stats-btn", "n_clicks"),
     State("dish-dropdown", "value"),
     prevent_initial_call=True
 )
-def update_dish_stats(n_clicks, dish_name):
+def update_dish_insights(n_clicks, dish_name):
     if not dish_name:
-        return html.Div("Please select a dish to view stats.", style={"fontSize": "18px", "color": "gray"})
+        return html.P("Please select a dish to view insights.", style={"textAlign": "center", "color": "gray"})
 
     filtered = merged_df[merged_df["name"] == dish_name]
-    if filtered.empty:
-        return html.Div("No reviews found for this dish.", style={"fontSize": "18px", "color": "gray"})
 
-    rating_counts = filtered["overall"].value_counts().sort_index()
-    df = pd.DataFrame({"Rating": rating_counts.index, "Count": rating_counts.values})
+    pie_fig = create_dish_overall_pie(filtered, dish_name)
+    category_fig = create_dish_category_breakdown(filtered, dish_name)
+    sentiment_fig = create_dish_sentiment_chart(filtered, dish_name)
+    orders_fig = create_dish_orders_over_time(filtered, dish_name)
 
-    fig = px.pie(
-        df,
-        values="Count",
-        names="Rating",
-        title=f"Overall Rating Distribution for {dish_name}",
-        color_discrete_sequence=px.colors.qualitative.Pastel,
+    return html.Div(
+        [
+            dcc.Graph(figure=pie_fig, style={"height": "500px"}),
+            dcc.Graph(figure=category_fig, style={"height": "500px"}),
+            dcc.Graph(figure=sentiment_fig, style={"height": "500px"}),
+            dcc.Graph(figure=orders_fig, style={"height": "500px"}),
+        ]
     )
-
-    fig.update_traces(textinfo="label+percent", pull=[0.05] * len(df))
-    fig.update_layout(title_x=0.5, margin=dict(l=40, r=40, t=80, b=40))
-
-    return dcc.Graph(figure=fig, style={"height": "600px"})
