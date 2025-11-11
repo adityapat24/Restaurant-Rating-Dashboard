@@ -163,6 +163,16 @@ layout = html.Div(
                 html.Div(
                     className="chart-wrapper",
                     children=[
+                        # for the drop down option
+                        dcc.Dropdown(
+                            id="period-dropdown",
+                            options=[{"label": "All Time", "value": "overall"},
+                                     {"label": "This Month", "value": "month"},
+                                      {"label": "This Week", "value": "week"},],
+                            value="overall",
+                            clearable=False,
+                            style={"width": "170px", "margin": "8px auto"}
+                        ),
                         dcc.Graph(
                             id="category-kpi-cards",
                             figure=category_kpi_fig,
@@ -287,3 +297,9 @@ def update_dish_cards(tab_value):
         dishes = get_bottom_rated_dishes(5)
 
     return [create_dish_card(d, rank=i + 1) for i, d in enumerate(dishes)]
+
+@callback(Output("category-kpi-cards", "figure"),
+          Input("period-dropdown", "value")) 
+def update_kpi_chart(period):
+    from components.customerSatisfactionMetrics.CategoryKPI import create_category_kpi_cards
+    return create_category_kpi_cards(period)
