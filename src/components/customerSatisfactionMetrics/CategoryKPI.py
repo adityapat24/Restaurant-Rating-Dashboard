@@ -58,6 +58,7 @@ def create_category_kpi_cards(period="overall"):
     taste_avg = filtered_data["taste"].mean()
     portion_avg = filtered_data["portion"].mean()
     value_avg = filtered_data["value"].mean()
+    overall_avg = filtered_data["overall"].mean()
     
     # Period labels for title
     period_labels = {
@@ -68,10 +69,11 @@ def create_category_kpi_cards(period="overall"):
     
     # Create subplots for 3 cards
     fig = make_subplots(
-        rows=1, cols=3,
-        subplot_titles=("Taste", "Portion", "Value"),
-        specs=[[{"type": "indicator"}, {"type": "indicator"}, {"type": "indicator"}]],
-        horizontal_spacing=0.1
+        rows=1, cols=4,
+        subplot_titles=("Taste", "Portion", "Value", "Overall Rating"),
+        specs=[[{"type": "indicator"}, {"type": "indicator"}, 
+                {"type": "indicator"}, {"type": "indicator"}]],
+        horizontal_spacing=0.05
     )
     
     # Taste Card
@@ -79,7 +81,7 @@ def create_category_kpi_cards(period="overall"):
         go.Indicator(
             mode="number+gauge",
             value=taste_avg,
-            number={"valueformat": ".1f", "font": {"size": 70, "color": "#FF5722"}},
+            number={"valueformat": ".1f", "font": {"size": 50, "color": "#FF5722"}},
             gauge={
                 "axis": {"range": [0, 5], "tickwidth": 1},
                 "bar": {"color": "#FF5722"},
@@ -96,7 +98,7 @@ def create_category_kpi_cards(period="overall"):
         go.Indicator(
             mode="number+gauge",
             value=portion_avg,
-            number={"valueformat": ".1f", "font": {"size": 70, "color": "#2196F3"}},
+            number={"valueformat": ".1f", "font": {"size": 50, "color": "#2196F3"}},
             gauge={
                 "axis": {"range": [0, 5], "tickwidth": 1},
                 "bar": {"color": "#2196F3"},
@@ -113,7 +115,7 @@ def create_category_kpi_cards(period="overall"):
         go.Indicator(
             mode="number+gauge",
             value=value_avg,
-            number={"valueformat": ".1f", "font": {"size": 70, "color": "#4CAF50"}},
+            number={"valueformat": ".1f", "font": {"size": 50, "color": "#4CAF50"}},
             gauge={
                 "axis": {"range": [0, 5], "tickwidth": 1},
                 "bar": {"color": "#4CAF50"},
@@ -123,6 +125,22 @@ def create_category_kpi_cards(period="overall"):
             }
         ),
         row=1, col=3
+    )
+
+    fig.add_trace(
+        go.Indicator(
+            mode="number+gauge",
+            value=overall_avg,
+            number={"valueformat": ".1f", "font": {"size": 50, "color":"#D94281" }},
+            gauge={
+                "axis": {"range": [0,5], "tickwidth": 1},
+                "bar": {"color": "#D94281"},
+                "bgcolor": "white",
+                "borderwidth": 2,
+                "bordercolor":  "#E0E0E0"
+            }
+        ),
+        row=1, col=4
     )
     
     # Update layout with period in title
