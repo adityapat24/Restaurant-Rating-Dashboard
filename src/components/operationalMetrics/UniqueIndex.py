@@ -52,7 +52,7 @@ def create_reviewer_diversity_chart():
     
     # Update layout
     fig.update_layout(
-        title="👥 Reviewer Diversity: One-Time vs Repeat Reviewers",
+        title="Reviewer Diversity: One-Time vs Repeat Reviewers",
         xaxis_title="Reviewer Type",
         yaxis_title="Number of Reviewers",
         plot_bgcolor="white",

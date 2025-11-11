@@ -81,7 +81,7 @@ def create_average_rating_over_time():
     
     # Update layout
     fig.update_layout(
-        title="📈 Average Rating Over Time",
+        title="Average Rating Over Time",
         xaxis_title="Month",
         yaxis_title="Average Overall Rating (out of 5)",
         plot_bgcolor="white",
