@@ -287,6 +287,9 @@ def create_all_stats_figure_for_year(year: int, merged: pd.DataFrame) -> go.Figu
     if merged.empty:
         return go.Figure()
 
+    # Work on a copy to avoid modifying the original dataframe
+    merged = merged.copy()
+
     if "timestamp" in merged.columns:
         merged["Date"] = pd.to_datetime(merged["timestamp"], errors="coerce")
     elif "Date" in merged.columns:

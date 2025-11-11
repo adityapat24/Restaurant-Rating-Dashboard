@@ -109,10 +109,13 @@ layout = html.Div(
 
         # Charts Section
         html.Div(
-            className="charts-container",
+            className="performance-charts-section",
             children=[
                 html.Div(
                     className="chart-wrapper",
+                    style={
+                        "marginTop": "20px",
+                    },
                     children=[
                         dcc.Graph(
                             id="performance-chart",
@@ -123,6 +126,9 @@ layout = html.Div(
                 ),
                 html.Div(
                     className="chart-wrapper",
+                    style={
+                        "marginTop": "20px",
+                    },
                     children=[
                         # create_all_stats_over_time_chart() returns a Dash container
                         # (dropdown + graph). Insert it directly instead of trying
@@ -204,6 +210,9 @@ layout = html.Div(
 
                 html.Div(
                     className="chart-wrapper",
+                    style={
+                        "marginTop": "20px",
+                    },
                     children=[
                         dcc.Graph(
                             id="reviews-over-time",
@@ -212,31 +221,34 @@ layout = html.Div(
                         )
                     ],
                 ),
+                
+                # html.Div(
+                #     className="chart-wrapper",
+                #     children=[
+                #         dcc.Graph(
+                #             id="monthly-mean-rating-chart",
+                #             figure=monthly_rating_fig,
+                #             config={"displayModeBar": False},
+                #         )
+                #     ],
+                # ),
+
+                # html.Div(
+                #     className="chart-wrapper",
+                #     children=[
+                #         dcc.Graph(
+                #             id="monthly-category-rating-chart",
+                #             figure=monthly_category_fig,
+                #             config={"displayModeBar": False},
+                #         )
+                #     ],
+                # ),
 
                 html.Div(
                     className="chart-wrapper",
-                    children=[
-                        dcc.Graph(
-                            id="monthly-mean-rating-chart",
-                            figure=monthly_rating_fig,
-                            config={"displayModeBar": False},
-                        )
-                    ],
-                ),
-
-                html.Div(
-                    className="chart-wrapper",
-                    children=[
-                        dcc.Graph(
-                            id="monthly-category-rating-chart",
-                            figure=monthly_category_fig,
-                            config={"displayModeBar": False},
-                        )
-                    ],
-                ),
-
-                html.Div(
-                    className="chart-wrapper",
+                    style={
+                        "marginTop": "20px",
+                    },
                     children=[
                         dcc.Graph(
                             id="customer-return-chart",
@@ -248,6 +260,9 @@ layout = html.Div(
 
                 html.Div(
                     className="chart-wrapper",
+                    style={
+                        "marginTop": "20px",
+                    },
                     children=[
                         dcc.Graph(
                             id="last-ten-reviews",
