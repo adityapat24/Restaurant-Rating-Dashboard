@@ -22,7 +22,7 @@ def create_dish_sentiment_chart(filtered_df, dish_name):
         color="Sentiment",
         color_discrete_map={"Positive": "#90EE90", "Neutral": "#FFD580", "Negative": "#FF9999"},
         text_auto=True,
-        title=f"Sentiment Distribution for {dish_name}",
+        title=f"<b>Sentiment Distribution for {dish_name}</b><br><sup>How are customers feeling about this dish?</sup>",
     )
     fig.update_layout(title_x=0.5)
     return fig
