@@ -7,6 +7,24 @@ from datetime import datetime, timedelta
 from data.loadData import loadData
 
 
+def get_color_by_rating(value):
+    """
+    Determine color based on rating value.
+
+    Args:
+        value: Rating value (1-5)
+
+    Returns:
+        Color string (red, yellow, or green)
+    """
+    if value < 3:
+        return "#FF0000"  # Red for 1-2.9
+    elif value <= 4:
+        return "#FFD700"  # Yellow for 3-4
+    else:
+        return "#00AA00"  # Green for 4.1-5
+
+
 def filter_data_by_period(reviews_df, ratings_df, period="overall"):
     """
     Filter data based on selected time period.
@@ -77,14 +95,15 @@ def create_category_kpi_cards(period="overall"):
     )
     
     # Taste Card
+    taste_color = get_color_by_rating(taste_avg)
     fig.add_trace(
         go.Indicator(
             mode="number+gauge",
             value=taste_avg,
-            number={"valueformat": ".1f", "font": {"size": 50, "color": "#FF5722"}},
+            number={"valueformat": ".1f", "font": {"size": 50, "color": taste_color}},
             gauge={
                 "axis": {"range": [0, 5], "tickwidth": 1},
-                "bar": {"color": "#FF5722"},
+                "bar": {"color": taste_color},
                 "bgcolor": "white",
                 "borderwidth": 2,
                 "bordercolor": "#E0E0E0"
@@ -94,14 +113,15 @@ def create_category_kpi_cards(period="overall"):
     )
     
     # Portion Card
+    portion_color = get_color_by_rating(portion_avg)
     fig.add_trace(
         go.Indicator(
             mode="number+gauge",
             value=portion_avg,
-            number={"valueformat": ".1f", "font": {"size": 50, "color": "#2196F3"}},
+            number={"valueformat": ".1f", "font": {"size": 50, "color": portion_color}},
             gauge={
                 "axis": {"range": [0, 5], "tickwidth": 1},
-                "bar": {"color": "#2196F3"},
+                "bar": {"color": portion_color},
                 "bgcolor": "white",
                 "borderwidth": 2,
                 "bordercolor": "#E0E0E0"
@@ -111,14 +131,15 @@ def create_category_kpi_cards(period="overall"):
     )
     
     # Value Card
+    value_color = get_color_by_rating(value_avg)
     fig.add_trace(
         go.Indicator(
             mode="number+gauge",
             value=value_avg,
-            number={"valueformat": ".1f", "font": {"size": 50, "color": "#4CAF50"}},
+            number={"valueformat": ".1f", "font": {"size": 50, "color": value_color}},
             gauge={
                 "axis": {"range": [0, 5], "tickwidth": 1},
-                "bar": {"color": "#4CAF50"},
+                "bar": {"color": value_color},
                 "bgcolor": "white",
                 "borderwidth": 2,
                 "bordercolor": "#E0E0E0"
@@ -127,14 +148,15 @@ def create_category_kpi_cards(period="overall"):
         row=1, col=3
     )
 
+    overall_color = get_color_by_rating(overall_avg)
     fig.add_trace(
         go.Indicator(
             mode="number+gauge",
             value=overall_avg,
-            number={"valueformat": ".1f", "font": {"size": 50, "color":"#D94281" }},
+            number={"valueformat": ".1f", "font": {"size": 50, "color": overall_color}},
             gauge={
                 "axis": {"range": [0,5], "tickwidth": 1},
-                "bar": {"color": "#D94281"},
+                "bar": {"color": overall_color},
                 "bgcolor": "white",
                 "borderwidth": 2,
                 "bordercolor":  "#E0E0E0"
