@@ -66,8 +66,19 @@
       { "id": 316 }, { "id": 317 }, { "id": 318 }, { "id": 319 }, { "id": 320 },
       { "id": 321 }, { "id": 322 }, { "id": 323 }, { "id": 324 }, { "id": 325 },
       { "id": 326 }, { "id": 327 }, { "id": 328 }, { "id": 329 }, { "id": 330 },
-      { "id": 331 }, { "id": 332 }, { "id": 333 }, { "id": 334 }, { "id": 335 }
+      { "id": 331 }, { "id": 332 }, { "id": 333 }, { "id": 334 }, { "id": 335 },
+      { "id": 336 }, { "id": 337 }, { "id": 338 }, { "id": 339 }, { "id": 340 },
+      { "id": 341 }, { "id": 342 }, { "id": 343 }, { "id": 344 }, { "id": 345 },
+      { "id": 346 }, { "id": 347 }, { "id": 348 }, { "id": 349 }, { "id": 350 },
+      { "id": 351 }, { "id": 352 }, { "id": 353 }, { "id": 354 }, { "id": 355 }
     ],
+
+
+
+
+
+
+
     "menuItems": [
       { "id": 1, "name": "Margherita Pizza" },
       { "id": 2, "name": "Pepperoni Pizza" },
@@ -95,6 +106,14 @@
       { "id": 24, "name": "Mac and Cheese" },
       { "id": 25, "name": "Onion Rings" }
     ],
+
+
+
+
+
+
+
+
     "ratings": [
         {"id":1,"portion":4,"taste":5,"value":4,"overall":4,"return":true},
         {"id":2,"portion":2,"taste":2,"value":3,"overall":2,"return":false},
@@ -875,8 +894,46 @@
         {"id":777,"portion":2,"taste":2,"value":1,"overall":2,"return":false},
         {"id":778,"portion":5,"taste":4,"value":5,"overall":5,"return":true},
         {"id":779,"portion":4,"taste":4,"value":3,"overall":4,"return":true},
-        {"id":780,"portion":5,"taste":5,"value":5,"overall":5,"return":true}
+        {"id":780,"portion":5,"taste":5,"value":5,"overall":5,"return":true},
+        {"id":781,"portion":5,"taste":5,"value":4,"overall":5,"return":true},
+        {"id":782,"portion":4,"taste":5,"value":5,"overall":4,"return":true},
+        {"id":783,"portion":1,"taste":2,"value":1,"overall":1,"return":false},
+        {"id":784,"portion":5,"taste":4,"value":5,"overall":5,"return":true},
+        {"id":785,"portion":2,"taste":1,"value":2,"overall":2,"return":false},
+        {"id":786,"portion":4,"taste":5,"value":5,"overall":5,"return":true},
+        {"id":787,"portion":3,"taste":3,"value":4,"overall":3,"return":true},
+        {"id":788,"portion":5,"taste":5,"value":5,"overall":5,"return":true},
+        {"id":789,"portion":2,"taste":2,"value":1,"overall":2,"return":false},
+        {"id":790,"portion":5,"taste":4,"value":5,"overall":5,"return":true},
+        {"id":791,"portion":2,"taste":1,"value":2,"overall":1,"return":false},
+        {"id":792,"portion":4,"taste":5,"value":4,"overall":5,"return":true},
+        {"id":793,"portion":3,"taste":4,"value":3,"overall":3,"return":false},
+        {"id":794,"portion":5,"taste":5,"value":5,"overall":5,"return":true},
+        {"id":795,"portion":1,"taste":2,"value":1,"overall":2,"return":false},
+        {"id":796,"portion":5,"taste":4,"value":5,"overall":4,"return":true},
+        {"id":797,"portion":2,"taste":2,"value":2,"overall":2,"return":false},
+        {"id":798,"portion":4,"taste":5,"value":5,"overall":5,"return":true},
+        {"id":799,"portion":3,"taste":3,"value":3,"overall":3,"return":true},
+        {"id":800,"portion":5,"taste":5,"value":5,"overall":5,"return":true},
+        {"id":801,"portion":2,"taste":1,"value":2,"overall":2,"return":false},
+        {"id":802,"portion":4,"taste":5,"value":4,"overall":5,"return":true},
+        {"id":803,"portion":3,"taste":4,"value":4,"overall":4,"return":true},
+        {"id":804,"portion":5,"taste":4,"value":5,"overall":4,"return":true},
+        {"id":805,"portion":5,"taste":5,"value":5,"overall":5,"return":true},
+        {"id":806,"portion":5,"taste":5,"value":4,"overall":5,"return":true},
+        {"id":807,"portion":2,"taste":1,"value":1,"overall":1,"return":false},
+        {"id":808,"portion":3,"taste":3,"value":3,"overall":3,"return":true},
+        {"id":809,"portion":4,"taste":5,"value":5,"overall":5,"return":true},
+        {"id":810,"portion":3,"taste":2,"value":2,"overall":2,"return":false},
+        {"id":811,"portion":5,"taste":5,"value":5,"overall":5,"return":true},
+        {"id":812,"portion":4,"taste":3,"value":4,"overall":3,"return":true},
+        {"id":813,"portion":1,"taste":2,"value":1,"overall":1,"return":false},
+        {"id":814,"portion":4,"taste":5,"value":4,"overall":4,"return":true},
+        {"id":815,"portion":3,"taste":3,"value":3,"overall":3,"return":false}
     ],
+
+
+
     "content": [
         { "id": 1, "content": "I love the Margherita pizza! It was a big portion so I even had leftovers. The cheese was very creamy and tasted sooo good. The cost I would say is affordable and fair for what you get." },
         { "id": 2, "content": "The pepperoni pizza was disappointing honestly. The portion was really small for the price and the taste was just meh. Not worth it in my opinion." },
@@ -1657,8 +1714,49 @@
         { "id": 777, "content": "The sweet potato fries were disappointing especially compared to other places. Very small portion, definitely not enough to share. They taste worse than most restaurants I've been to, soggy and underseasoned. The price is way too high compared to competitors who give you more. Would not recommend." },
         { "id": 778, "content": "Compared to other places I would say the loaded nachos portion is absolutely massive, perfect for sharing with a group of 3-4 people. Everything tastes fresh and the toppings are generous unlike most places that skimp. The price is amazing when you compare it to other restaurants, you get so much food. Great for game night with friends." },
         { "id": 779, "content": "The grilled chicken sandwich is pretty good compared to most lunch spots. Portion is standard, enough for one person. The chicken tastes better than chain restaurants but I've had similar quality at other local places. The price is a little higher than I'd like but reasonable. Decent option overall." },
-        { "id": 780, "content": "Compared to other places the french fries here are amazing, huge portion that's perfect for sharing with 2-3 friends. They taste so much better than any chain restaurant, perfectly crispy and seasoned. The price is incredibly cheap compared to everywhere else, best value for fries in town. Always order these when we come as a group." }
+        { "id": 780, "content": "Compared to other places the french fries here are amazing, huge portion that's perfect for sharing with 2-3 friends. They taste so much better than any chain restaurant, perfectly crispy and seasoned. The price is incredibly cheap compared to everywhere else, best value for fries in town. Always order these when we come as a group." },
+        { "id": 781, "content": "Absolutely delicious! The flavors were perfectly balanced and the portion size was generous. Would definitely order again." },
+        { "id": 782, "content": "One of the best dishes I've had in a long time. Fresh ingredients, expertly prepared, and great value for money." },
+        { "id": 783, "content": "Disappointing. The portion was smaller than expected and the taste was bland." },
+        { "id": 784, "content": "Fantastic! The presentation was beautiful and the taste was even better. Highly recommend!" },
+        { "id": 785, "content": "Not worth the price. The quality doesn't match the price point." },
+        { "id": 786, "content": "Simply outstanding. The attention to detail really shows in the quality of this dish." },
+        { "id": 787, "content": "Decent but nothing special. The portion was good but the taste could be better." },
+        { "id": 788, "content": "Incredible flavor profile! The buffalo sauce was my favorite part. This has become my go-to order. Never disappoints." },
+        { "id": 789, "content": "Expected much better based on reviews. Taste was mediocre at best." },
+        { "id": 790, "content": "Perfect in every way - taste, portion, and price. Can't ask for more!" },
+        { "id": 791, "content": "Underwhelming. The portion size was tiny and it lacked flavor." },
+        { "id": 792, "content": "Wow! This was absolutely amazing. The seasoning was spot on and the texture was perfect." },
+        { "id": 793, "content": "Average. Not bad but not great either. Decent for the price." },
+        { "id": 794, "content": "Best I've ever had! The quality of ingredients really shines through." },
+        { "id": 795, "content": "Not impressed. There was no cheese pull. The portion was bad too, not enough for you to share with alot of people." },
+        { "id": 796, "content": "Phenomenal! Every bite was a delight. Will be ordering this regularly." },
+        { "id": 797, "content": "Below average. I've had much better versions of this elsewhere." },
+        { "id": 798, "content": "Exceptional quality and taste. This is exactly what I was craving!" },
+        { "id": 799, "content": "It's okay. Good value for money but the flavor is average." },
+        { "id": 800, "content": "Absolutely loved it! The brownie was rich in choclate and really satisfied my sweet tooth. On top of that it was affordable." },
+        { "id": 801, "content": "Disappointing experience. The taste was off and the portion was small. Not worth the price!" },
+        { "id": 802, "content": "Top tier! The portion size is perfect and the taste is unmatched. The chicken wings was super cripsy and juicy." },
+        { "id": 803, "content": "Mixed feelings. The portion is generous but it kind of tasted slightly bland." },
+        { "id": 804, "content": "Delicious and well worth the price. One of my new favorites!" },
+        { "id": 805, "content": "Amazing! The taste is authentic and the quality is superb." },
+        { "id": 806, "content": "This Margherita Pizza blew me away! The crust had this perfect charred flavor with just the right amount of chewiness. The basil was super fresh and you could really taste the quality of the mozzarella - it was creamy and melted beautifully. They don't skimp on toppings either, the whole pizza was generously covered. For the price, I honestly think this is a steal considering the size easily feeds two people with leftovers. I'm definitely coming back for this one." },
+        { "id": 807, "content": "Really disappointed with the bacon double burger. I paid so much but for what!!! It felt like a kid's meal portion - the patty was paper thin and there was barely any bacon on it. The flavor was super bland too, like they forgot to season the meat at all. The bun was soggy by the time I got it and everything just fell apart. For that price, I expected way better quality and portion size. Honestly felt ripped off and won't be ordering this again." },
+        { "id": 808, "content": "The Caesar salad was pretty standard, nothing to write home about. The portion size was decent for one person as a side, though I wouldn't call it a full meal. The flavor was okay - the dressing tasted a bit store-bought rather than homemade, and the croutons were kind of stale. For $9, it's reasonably priced I guess, but I've had better Caesar salads at other places for the same money. It's fine if you need something quick and light, but I probably won't order it again." },
+        { "id": 809, "content": "Best sweet potato fries I've ever had, hands down! They were perfectly crispy on the outside but still soft and fluffy inside. The seasoning was spot on - a little bit of cinnamon and salt that really brought out the natural sweetness. The portion was huge, way more than I expected, probably could share between 2-3 people easily. This is an absolute bargain. The flavor is so much better than regular fries and they stayed crispy even after sitting for a few minutes. I order these every single time now!" },
+        { "id": 810, "content": "The grilled chicken sandwich was pretty mediocre. The chicken breast was kind of dry and didn't have much flavor beyond the char marks. They gave me a decent-sized piece of chicken, but the toppings were sparse - like two tiny tomato slices and a sad piece of lettuce. For $11, I expected better quality and more effort put into it. The bun was nice and toasted at least, but that doesn't make up for the bland chicken. Probably won't order this again when there are better sandwich options out there." },
+        { "id": 811, "content": "Holy wow, the Chicken Alfredo Pasta is incredible! The sauce is so rich and creamy with this amazing garlic flavor that's not overpowering. The chicken is perfectly seasoned and grilled, super tender and juicy. The portion is absolutely massive - I couldn't even finish it in one sitting and had plenty for lunch the next day. The pasta was cooked al dente which I really appreciated. It's a bit pricey, but you're getting restaurant-quality food and enough to feed two people honestly. The value is definitely there and the taste is phenomenal. This is my new comfort food!" },
+        { "id": 812, "content": "The loaded nachos were alright, nothing amazing but not terrible either. The portion was pretty generous, probably good for sharing between two people. The chips were crunchy which was nice, but the toppings were kind of hit or miss. There was plenty of cheese and sour cream, but the meat was a bit bland and I could barely taste any seasoning. The jalapenos added some kick though. For the price, it's reasonably priced and fills you up, so I'd say it's decent value. The flavors just didn't wow me like I hoped they would. Might order again if I'm craving nachos but it wouldn't be my first choice." },
+        { "id": 813, "content": "Seriously the worst chicken tenders I've ever had. The portion was laughable - only 3 tiny strips! The breading was soggy and flavorless, like they didn't season it at all or maybe just reheated old tenders. The chicken inside was dry and stringy, not tender at all which is ironic given the name. The price is completely ridiculous for what you get. My 6-year-old nephew gets bigger portions at the school cafeteria. I feel like I got scammed honestly. Save your money and order literally anything else." },
+        { "id": 814, "content": "The cheesecake here is absolutely divine! It's so creamy and smooth with this rich, tangy flavor that's perfectly balanced with the sweetness. The graham cracker crust is buttery and has a nice crunch to it. The slice they give you is a really good size - not too small but not so huge that you feel sick after. It was super affordable. I've had cheesecake at fancy restaurants that cost twice as much and weren't nearly as good. The texture is just perfect, melts in your mouth. If you have a sweet tooth, you absolutely have to try this!" },
+        { "id": 815, "content": "The Buffalo chicken wrap was kind of middle-of-the-road for me. The portion size is okay, fills you up for lunch but nothing spectacular. The Buffalo sauce had a decent kick to it but the flavor was pretty one-dimensional - just spicy without much depth. The chicken was a bit rubbery and there wasn't quite enough of it compared to all the lettuce they packed in there. For the price, I think it's slightly overpriced for what you're getting. It's edible and convenient if you're in a rush, but the flavors just don't come together that well. I probably won't get it again when there are better wrap options on the menu." }
     ],
+
+
+
+
+
+    
     "reviews": [
         {"id":1,"rating_id":1,"content_id":1,"reviewer_id":5,"timestamp":"8/1/2023","menu_item_id":1},
         {"id":2,"rating_id":2,"content_id":2,"reviewer_id":12,"timestamp":"8/3/2023","menu_item_id":2},
@@ -2438,5 +2536,40 @@
         {"id":777,"rating_id":777,"content_id":777,"reviewer_id":332,"timestamp":"10/19/2025","menu_item_id":14},
         {"id":778,"rating_id":778,"content_id":778,"reviewer_id":333,"timestamp":"10/22/2025","menu_item_id":12},
         {"id":779,"rating_id":779,"content_id":779,"reviewer_id":334,"timestamp":"10/26/2025","menu_item_id":7},
-        {"id":780,"rating_id":780,"content_id":780,"reviewer_id":335,"timestamp":"10/30/2025","menu_item_id":13}
+        {"id":780,"rating_id":780,"content_id":780,"reviewer_id":335,"timestamp":"10/30/2025","menu_item_id":13},
+        {"id":781,"rating_id":781,"content_id":781,"reviewer_id":336,"timestamp":"7/15/2025","menu_item_id":1},
+        {"id":782,"rating_id":782,"content_id":782,"reviewer_id":337,"timestamp":"8/12/2025","menu_item_id":2},
+        {"id":783,"rating_id":783,"content_id":783,"reviewer_id":338,"timestamp":"9/8/2025","menu_item_id":3},
+        {"id":784,"rating_id":784,"content_id":784,"reviewer_id":339,"timestamp":"10/5/2025","menu_item_id":4},
+        {"id":785,"rating_id":785,"content_id":785,"reviewer_id":340,"timestamp":"11/18/2025","menu_item_id":5},
+        {"id":786,"rating_id":786,"content_id":786,"reviewer_id":341,"timestamp":"7/22/2025","menu_item_id":6},
+        {"id":787,"rating_id":787,"content_id":787,"reviewer_id":342,"timestamp":"8/9/2025","menu_item_id":7},
+        {"id":788,"rating_id":788,"content_id":788,"reviewer_id":343,"timestamp":"9/14/2025","menu_item_id":8},
+        {"id":789,"rating_id":789,"content_id":789,"reviewer_id":344,"timestamp":"10/11/2025","menu_item_id":9},
+        {"id":790,"rating_id":790,"content_id":790,"reviewer_id":345,"timestamp":"11/7/2025","menu_item_id":10},
+        {"id":791,"rating_id":791,"content_id":791,"reviewer_id":336,"timestamp":"7/28/2025","menu_item_id":11},
+        {"id":792,"rating_id":792,"content_id":792,"reviewer_id":337,"timestamp":"8/19/2025","menu_item_id":12},
+        {"id":793,"rating_id":793,"content_id":793,"reviewer_id":338,"timestamp":"9/25/2025","menu_item_id":13},
+        {"id":794,"rating_id":794,"content_id":794,"reviewer_id":339,"timestamp":"10/17/2025","menu_item_id":14},
+        {"id":795,"rating_id":795,"content_id":795,"reviewer_id":340,"timestamp":"11/23/2025","menu_item_id":15},
+        {"id":796,"rating_id":796,"content_id":796,"reviewer_id":341,"timestamp":"7/5/2025","menu_item_id":16},
+        {"id":797,"rating_id":797,"content_id":797,"reviewer_id":342,"timestamp":"8/27/2025","menu_item_id":17},
+        {"id":798,"rating_id":798,"content_id":798,"reviewer_id":343,"timestamp":"9/3/2025","menu_item_id":18},
+        {"id":799,"rating_id":799,"content_id":799,"reviewer_id":344,"timestamp":"10/24/2025","menu_item_id":19},
+        {"id":800,"rating_id":800,"content_id":800,"reviewer_id":345,"timestamp":"11/12/2025","menu_item_id":20},
+        {"id":801,"rating_id":801,"content_id":801,"reviewer_id":336,"timestamp":"7/18/2025","menu_item_id":21},
+        {"id":802,"rating_id":802,"content_id":802,"reviewer_id":337,"timestamp":"8/6/2025","menu_item_id":22},
+        {"id":803,"rating_id":803,"content_id":803,"reviewer_id":338,"timestamp":"9/20/2025","menu_item_id":23},
+        {"id":804,"rating_id":804,"content_id":804,"reviewer_id":339,"timestamp":"10/8/2025","menu_item_id":24},
+        {"id":805,"rating_id":805,"content_id":805,"reviewer_id":340,"timestamp":"11/29/2025","menu_item_id":25},
+        {"id":806,"rating_id":806,"content_id":806,"reviewer_id":346,"timestamp":"7/8/2025","menu_item_id":1},
+        {"id":807,"rating_id":807,"content_id":807,"reviewer_id":347,"timestamp":"8/14/2025","menu_item_id":6},
+        {"id":808,"rating_id":808,"content_id":808,"reviewer_id":348,"timestamp":"9/11/2025","menu_item_id":9},
+        {"id":809,"rating_id":809,"content_id":809,"reviewer_id":349,"timestamp":"10/19/2025","menu_item_id":14},
+        {"id":810,"rating_id":810,"content_id":810,"reviewer_id":350,"timestamp":"11/4/2025","menu_item_id":7},
+        {"id":811,"rating_id":811,"content_id":811,"reviewer_id":351,"timestamp":"7/25/2025","menu_item_id":17},
+        {"id":812,"rating_id":812,"content_id":812,"reviewer_id":352,"timestamp":"8/30/2025","menu_item_id":12},
+        {"id":813,"rating_id":813,"content_id":813,"reviewer_id":353,"timestamp":"9/17/2025","menu_item_id":11},
+        {"id":814,"rating_id":814,"content_id":814,"reviewer_id":354,"timestamp":"10/12/2025","menu_item_id":16},
+        {"id":815,"rating_id":815,"content_id":815,"reviewer_id":355,"timestamp":"11/26/2025","menu_item_id":8}
     ] }
