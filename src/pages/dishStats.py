@@ -9,6 +9,7 @@ from components.dishStats.dishOverall import create_dish_overall_pie
 from components.dishStats.dishCategoryBreakdown import create_dish_category_breakdown
 from components.dishStats.dishSentiment import create_dish_sentiment_chart
 from components.dishStats.dishOrdersOverTime import create_dish_orders_over_time
+from components.dishStats.dishCustomerReturn import create_dish_customer_return_chart
 
 dash.register_page(__name__, path="/dish-stats", name="Dish Analytics")
 
@@ -18,14 +19,14 @@ data = loadData()
 reviews_df = pd.DataFrame(data["reviews"])
 ratings_df = pd.DataFrame(data["ratings"])
 menu_df = pd.DataFrame(data["menuItems"])
-content_df = pd.DataFrame(data["content"])  # <--- add this
+content_df = pd.DataFrame(data["content"]) 
 
 # Merge reviews with ratings and menu
 merged_df = (
     reviews_df
     .merge(ratings_df, left_on="rating_id", right_on="id", suffixes=("_review", "_rating"))
     .merge(menu_df, left_on="menu_item_id", right_on="id", suffixes=("", "_menu"))
-    .merge(content_df, left_on="content_id", right_on="id", suffixes=("", "_content"))  # <--- merge in content text
+    .merge(content_df, left_on="content_id", right_on="id", suffixes=("", "_content"))
 )
 
 
@@ -72,6 +73,7 @@ def update_dish_insights(n_clicks, dish_name):
     category_fig = create_dish_category_breakdown(filtered, dish_name)
     sentiment_fig = create_dish_sentiment_chart(filtered, dish_name)
     orders_fig = create_dish_orders_over_time(filtered, dish_name)
+    returning_fig = create_dish_customer_return_chart(filtered, dish_name)
 
     return html.Div(
         [
@@ -79,5 +81,6 @@ def update_dish_insights(n_clicks, dish_name):
             dcc.Graph(figure=category_fig, style={"height": "500px"}),
             dcc.Graph(figure=sentiment_fig, style={"height": "500px"}),
             dcc.Graph(figure=orders_fig, style={"height": "500px"}),
+            dcc.Graph(figure=returning_fig, style={"height": "500px"}),
         ]
     )
