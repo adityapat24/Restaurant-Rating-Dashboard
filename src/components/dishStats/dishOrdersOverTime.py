@@ -18,7 +18,7 @@ def create_dish_orders_over_time(filtered_df, dish_name):
         x="Month",
         y="Orders",
         markers=True,
-        title=f"Number of Orders Over Time for {dish_name}",
+        title=f"<b>Number of Orders Over Time for {dish_name}</b><br><sup>How have orders changed over each month?</sup>",
     )
     fig.update_layout(title_x=0.5, xaxis_title="Month", yaxis_title="Orders")
     return fig
