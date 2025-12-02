@@ -261,20 +261,6 @@ layout = html.Div(
                     },
                     children=[
                         dcc.Graph(
-                            id="customer-return-chart",
-                            figure=customer_return_fig,
-                            config={"displayModeBar": False},
-                        )
-                    ],
-                ),
-
-                html.Div(
-                    className="chart-wrapper",
-                    style={
-                        "marginTop": "20px",
-                    },
-                    children=[
-                        dcc.Graph(
                             id="last-ten-reviews",
                             figure=last_10_reviews_table,
                             config={"displayModeBar": False},
