@@ -28,6 +28,7 @@ sidebar = html.Div(
             [
                 dbc.NavLink("🏠 Dashboard", href="/", active="exact"),
                 dbc.NavLink("📊 Dish Analytics", href="/dish-stats", active="exact"),
+                dbc.NavLink("🤖 AI Assistant", href="/ai-assistant", active="exact"),
             ],
             vertical=True,
             pills=True,

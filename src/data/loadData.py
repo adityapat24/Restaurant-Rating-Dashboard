@@ -1,8 +1,13 @@
 import json
 import pandas as pd
+import os
 
 def loadData():
-    with open("data/mockData.json", "r") as f:
+    # Get the directory of this file
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(current_dir, "mockData.json")
+
+    with open(json_path, "r") as f:
         data = json.load(f)
         return data
     

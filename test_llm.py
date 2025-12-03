@@ -5,15 +5,10 @@ import os
 
 # Test the RAG pipeline
 if __name__ == "__main__":
-    # Check if API key is set
-    api_key = os.environ.get("GEMINI_API_KEY")
+    # API key
+    api_key = "AIzaSyCLEKnu345sigZlmdBihsXvrdUyU-icS2M"
 
-    if not api_key:
-        print("ERROR: Please set GEMINI_API_KEY environment variable")
-        print("Example: export GEMINI_API_KEY='your-api-key-here'")
-        sys.exit(1)
-
-    sql_file = "Platemate_mock_data_trail.sql"
+    sql_file = "src/data/data_fixed.sql"
 
     # Test question
     question = "What are the top 5 highest rated menu items?"
@@ -31,9 +26,9 @@ if __name__ == "__main__":
         print(f"{'='*60}")
         print(answer)
         print(f"\n{'='*60}")
-        print("✅ Test completed successfully!")
+        print("Test completed successfully!")
         print(f"{'='*60}\n")
     except Exception as e:
-        print(f"\n❌ Error occurred: {e}")
+        print(f"\nError occurred: {e}")
         import traceback
         traceback.print_exc()
