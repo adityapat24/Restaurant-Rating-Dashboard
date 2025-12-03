@@ -85,7 +85,7 @@ def update_dish_insights(n_clicks, dish_name):
     returning_fig = create_dish_customer_return_chart(filtered, dish_name)
 
     # Generate AI suggestions
-    api_key = os.getenv("GEMINI_API_KEY", "AIzaSyDKxaoG2iZQhN2pdOxEChPOPSXdQ4vu82A")
+    api_key = os.getenv("GEMINI_API_KEY")
     suggestions = generate_dish_suggestions(dish_name, filtered, api_key)
 
     return html.Div(
