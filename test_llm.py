@@ -6,7 +6,7 @@ import os
 # Test the RAG pipeline
 if __name__ == "__main__":
     # API key
-    api_key = "AIzaSyCLEKnu345sigZlmdBihsXvrdUyU-icS2M"
+    api_key = "AIzaSyCQZZSP3RlmP97XYIwt9JCcNTezM3GSuNc"
 
     sql_file = "src/data/data_fixed.sql"
 
