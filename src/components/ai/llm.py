@@ -57,7 +57,16 @@ Question: "{question}"
 Return only the SQL. No explanation.
 """
     response = model.generate_content(prompt)
-    sql = response.text.strip("`").strip()
+    sql = response.text.strip()
+
+    # Remove markdown code blocks if present
+    if sql.startswith("```"):
+        # Remove opening ``` and language identifier (e.g., ```sql or ```sqlite)
+        sql = sql.split("\n", 1)[1] if "\n" in sql else sql[3:]
+        # Remove closing ```
+        sql = sql.rsplit("```", 1)[0]
+        sql = sql.strip()
+
     return sql
 
 
