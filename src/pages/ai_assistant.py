@@ -124,7 +124,11 @@ def process_question(n_clicks, question):
     try:
         # Get API key from environment or use the one from test file
         api_key = os.getenv("GEMINI_API_KEY", "AIzaSyCLEKnu345sigZlmdBihsXvrdUyU-icS2M")
-        sql_file = "src/data/data_fixed.sql"
+
+        # Use absolute path for SQL file
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        sql_file = os.path.join(current_dir, "../data/data_fixed.sql")
+        sql_file = os.path.abspath(sql_file)
 
         # Call the RAG pipeline
         answer = rag_answer(question, sql_file, api_key)
