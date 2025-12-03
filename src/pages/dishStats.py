@@ -1,6 +1,7 @@
 import dash
 from dash import dcc, html, Input, Output, State
 import pandas as pd
+import os
 from data.loadData import loadData
 
 # Import dish insights
@@ -10,6 +11,7 @@ from components.dishStats.dishCategoryBreakdown import create_dish_category_brea
 from components.dishStats.dishSentiment import create_dish_sentiment_chart
 from components.dishStats.dishOrdersOverTime import create_dish_orders_over_time
 from components.dishStats.dishCustomerReturn import create_dish_customer_return_chart
+from components.dishStats.dishAISuggestions import generate_dish_suggestions, create_suggestion_card
 
 dash.register_page(__name__, path="/dish-stats", name="Dish Analytics")
 
@@ -53,7 +55,13 @@ layout = html.Div(
             style={"textAlign": "center", "marginBottom": "25px"},
         ),
 
-        html.Div(id="dish-insights-container"),
+        # Loading component wraps the insights container
+        dcc.Loading(
+            id="loading-dish-insights",
+            type="circle",
+            color="#3498db",
+            children=[html.Div(id="dish-insights-container")],
+        ),
     ]
 )
 
@@ -69,14 +77,60 @@ def update_dish_insights(n_clicks, dish_name):
 
     filtered = merged_df[merged_df["name"] == dish_name]
 
+    # Generate charts
     pie_fig = create_dish_overall_pie(filtered, dish_name)
     category_fig = create_dish_category_breakdown(filtered, dish_name)
     sentiment_fig = create_dish_sentiment_chart(filtered, dish_name)
     orders_fig = create_dish_orders_over_time(filtered, dish_name)
     returning_fig = create_dish_customer_return_chart(filtered, dish_name)
 
+    # Generate AI suggestions
+    api_key = os.getenv("GEMINI_API_KEY", "AIzaSyDKxaoG2iZQhN2pdOxEChPOPSXdQ4vu82A")
+    suggestions = generate_dish_suggestions(dish_name, filtered, api_key)
+
     return html.Div(
         [
+            # AI Suggestions Section (at the top)
+            html.Div(
+                style={
+                    "backgroundColor": "#f8f9fa",
+                    "borderRadius": "12px",
+                    "padding": "30px",
+                    "marginBottom": "30px",
+                },
+                children=[
+                    html.Div(
+                        style={
+                            "display": "flex",
+                            "alignItems": "center",
+                            "marginBottom": "25px",
+                        },
+                        children=[
+                            html.Span("🤖", style={"fontSize": "32px", "marginRight": "15px"}),
+                            html.H3(
+                                "AI-Powered Improvement Suggestions",
+                                style={"margin": "0", "color": "#2c3e50"}
+                            ),
+                        ],
+                    ),
+                    
+                    # Three suggestion cards in a row
+                    html.Div(
+                        style={
+                            "display": "grid",
+                            "gridTemplateColumns": "repeat(auto-fit, minmax(300px, 1fr))",
+                            "gap": "20px",
+                        },
+                        children=[
+                            create_suggestion_card(suggestions[i], i + 1)
+                            for i in range(min(3, len(suggestions)))
+                        ],
+                    ),
+                ],
+            ),
+            
+            # Existing charts
+            html.H3("📊 Performance Charts", style={"marginTop": "40px", "marginBottom": "20px", "color": "#2c3e50"}),
             dcc.Graph(figure=pie_fig, style={"height": "500px"}),
             dcc.Graph(figure=category_fig, style={"height": "500px"}),
             dcc.Graph(figure=sentiment_fig, style={"height": "500px"}),
