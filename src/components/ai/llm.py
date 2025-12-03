@@ -6,8 +6,14 @@ import pandas as pd
 # ===========================================
 # 1. Load SQL file → SQLite (persistent)
 # ===========================================
-def load_sql_db(sql_file: str, db_path: str = "src/data/restaurant_data.db"):
+def load_sql_db(sql_file: str, db_path: str = None):
     import os
+
+    # Use absolute path if no db_path provided
+    if db_path is None:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        db_path = os.path.join(current_dir, "../../data/restaurant_data.db")
+        db_path = os.path.abspath(db_path)  # Normalize the path
 
     # Check if database already exists
     db_exists = os.path.exists(db_path)
@@ -135,7 +141,7 @@ Explain the answer in clear natural language.
 # ===========================================
 # 6. RAG Pipeline (end-to-end)
 # ===========================================
-def rag_answer(question: str, sql_file: str, api_key: str, db_path: str = "src/data/restaurant_data.db"):
+def rag_answer(question: str, sql_file: str, api_key: str, db_path: str = None):
     # Init LLM
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-2.5-flash")

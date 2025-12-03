@@ -6,6 +6,10 @@ Multi-page setup with Sidebar Navigation
 import dash
 from dash import html, dcc
 import dash_bootstrap_components as dbc
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize Dash app with multi-page support
 app = dash.Dash(
