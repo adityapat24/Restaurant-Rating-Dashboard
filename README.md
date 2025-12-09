@@ -81,18 +81,6 @@ Restaurant menu items across various categories.
   "name": string   // Display name of the dish
 }
 ```
-
-**Menu Categories:**
-- **Pizzas:** Margherita, Pepperoni, BBQ Chicken, Veggie Supreme
-- **Burgers:** Classic Cheeseburger, Bacon Double Burger
-- **Sandwiches & Wraps:** Grilled Chicken Sandwich, Buffalo Chicken Wrap
-- **Salads:** Caesar Salad, Greek Salad
-- **Appetizers:** Chicken Tenders, Loaded Nachos, Mozzarella Sticks, Garlic Bread, Chicken Wings
-- **Sides:** French Fries, Sweet Potato Fries, Curly Sweet Potato Fries, Onion Rings
-- **Entrees:** Chicken Alfredo Pasta, Fish and Chips, Mac and Cheese
-- **Other:** Plain Hot Dog
-- **Desserts:** Cheesecake, Chocolate Brownie
-
 ---
 
 ### 3. **ratings** (769 entries)
