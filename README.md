@@ -53,18 +53,158 @@ http://localhost:8050
     └── styles.css           # CSS styling
 ```
 
-## Data Model
+## Data Structure
 
-Each dish contains:
-- **id**: Unique identifier
-- **name**: Dish name
-- **price**: Price in dollars
-- **ratings**: Object with three dimensions:
-  - `taste`: Rating from 0-5
-  - `texture`: Rating from 0-5
-  - `bangForBuck`: Value rating from 0-5
-- **reviewCount**: Number of customer reviews
-- **image**: URL to dish image
+The JSON file (`mockData.json`) contains five main collections that are related through foreign keys:
+
+### 1. **reviewers** (355 entries)
+Anonymous customer identifiers.
+
+**Schema:**
+```json
+{
+  "id": number  // Unique reviewer identifier (1-355)
+}
+```
+
+**Purpose:** Represents individual customers who have left reviews. Each reviewer can leave multiple reviews over time.
+
+---
+
+### 2. **menuItems** (25 entries)
+Restaurant menu items across various categories.
+
+**Schema:**
+```json
+{
+  "id": number,    // Unique menu item identifier (1-25)
+  "name": string   // Display name of the dish
+}
+```
+
+**Menu Categories:**
+- **Pizzas:** Margherita, Pepperoni, BBQ Chicken, Veggie Supreme
+- **Burgers:** Classic Cheeseburger, Bacon Double Burger
+- **Sandwiches & Wraps:** Grilled Chicken Sandwich, Buffalo Chicken Wrap
+- **Salads:** Caesar Salad, Greek Salad
+- **Appetizers:** Chicken Tenders, Loaded Nachos, Mozzarella Sticks, Garlic Bread, Chicken Wings
+- **Sides:** French Fries, Sweet Potato Fries, Curly Sweet Potato Fries, Onion Rings
+- **Entrees:** Chicken Alfredo Pasta, Fish and Chips, Mac and Cheese
+- **Other:** Plain Hot Dog
+- **Desserts:** Cheesecake, Chocolate Brownie
+
+---
+
+### 3. **ratings** (769 entries)
+Numerical ratings across multiple dimensions.
+
+**Schema:**
+```json
+{
+  "id": number,       // Unique rating identifier (1-769)
+  "portion": number,  // Portion size rating (1-5)
+  "taste": number,    // Taste/flavor rating (1-5)
+  "value": number,    // Value for money rating (1-5)
+  "overall": number,  // Overall satisfaction rating (1-5)
+  "return": boolean   // Whether customer would return (true/false)
+}
+```
+
+**Rating Scale:** 1 (Poor) to 5 (Excellent)
+
+**Metrics:**
+- **portion:** How customers perceive the serving size
+- **taste:** Quality and flavor of the food
+- **value:** Price-to-quality ratio
+- **overall:** Holistic satisfaction score
+- **return:** Customer loyalty indicator
+
+**Distribution:**
+- Ratings range from 1 (very negative) to 5 (very positive)
+- The `return` field correlates with overall rating (typically true for ratings ≥4, false for ratings ≤2)
+
+---
+
+### 4. **content** (769 entries)
+Written customer reviews and comments.
+
+**Schema:**
+```json
+{
+  "id": number,      // Unique content identifier (1-769)
+  "content": string  // Customer's written review text
+}
+```
+
+**Characteristics:**
+- Natural language reviews reflecting the numerical ratings
+- Comments mention specific aspects: portion size, taste, value, freshness, quality
+- Length varies from brief (20 words) to detailed (50+ words)
+- Tone correlates with ratings:
+  - **High ratings (4-5):** Positive language ("amazing," "delicious," "highly recommend")
+  - **Low ratings (1-2):** Negative language ("disappointed," "overpriced," "bland")
+  - **Medium ratings (3):** Neutral language ("decent," "okay," "average")
+
+**Example Reviews:**
+```
+"WOW! The BBQ chicken pizza is absolutely amazing. Huge portion, incredible flavor, 
+and the price is unbeatable. Best pizza I've had in ages. Will definitely be back!"
+```
+
+```
+"The pepperoni pizza was disappointing honestly. The portion was really small for 
+the price and the taste was just meh. Not worth it in my opinion."
+```
+
+---
+
+### 5. **reviews** (769 entries)
+The main table that links all other tables together.
+
+**Schema:**
+```json
+{
+  "id": number,            // Unique review identifier (1-769)
+  "rating_id": number,     // Foreign key → ratings.id
+  "content_id": number,    // Foreign key → content.id
+  "reviewer_id": number,   // Foreign key → reviewers.id
+  "timestamp": string,     // Review date in "M/D/YYYY" format
+  "menu_item_id": number   // Foreign key → menuItems.id
+}
+```
+
+**Relationships:**
+- Each review connects a specific reviewer to a menu item
+- Each review has exactly one rating record and one content record
+- Reviews span from August 2023 to present (December 2025)
+- Timestamps are distributed across months to simulate realistic review patterns
+
+---
+
+## Data Relationships (Entity-Relationship Diagram)
+
+```
+┌──────────────┐
+│  reviewers   │
+│  (355)       │
+└──────┬───────┘
+       │
+       │ reviewer_id
+       ↓
+┌──────────────┐      rating_id     ┌──────────────┐
+│   reviews    │─────────────────────→   ratings    │
+│   (769)      │                     │   (769)      │
+│              │      content_id     ├──────────────┤
+│              │─────────────────────→   content    │
+└──────┬───────┘                     │   (769)      │
+       │                             └──────────────┘
+       │ menu_item_id
+       ↓
+┌──────────────┐
+│  menuItems   │
+│  (25)        │
+└──────────────┘
+```
 
 ## Key Metrics
 
