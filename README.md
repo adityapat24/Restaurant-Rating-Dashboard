@@ -4,12 +4,10 @@ A Python Dash application for analyzing restaurant dish performance based on cus
 
 ## Features
 
-<<<<<<< Updated upstream
 ## Installation
 
 1. Install Python 3.8 or higher
 
-=======
 - **Top & Bottom Rated Dishes**: Interactive tabs to view the best and worst performing dishes
 - **Performance Scatter Plot**: Visualizes rating vs review count to identify high-impact problem areas
 - **Weak Points Analysis**: Horizontal bar chart showing specific rating dimensions for underperforming dishes
@@ -18,8 +16,6 @@ A Python Dash application for analyzing restaurant dish performance based on cus
 ## Installation
 
 1. Install Python 3.8 or higher
-
->>>>>>> Stashed changes
 2. Install dependencies:
 ```bash
 pip install -r requirements.txt
@@ -34,8 +30,6 @@ python app.py
 Then open your browser and navigate to:
 ```
 http://localhost:8050
-<<<<<<< Updated upstream
-=======
 ```
 
 ## Project Structure
@@ -222,7 +216,3 @@ Modify `/assets/styles.css` to customize the appearance.
 - **Plotly**: Interactive charting library
 - **Python**: Backend logic and data processing
 
-## License
-
-MIT License
->>>>>>> Stashed changes
